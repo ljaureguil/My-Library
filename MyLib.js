@@ -1,4 +1,4 @@
-﻿/*
+/*
  var script = document.createElement("script")
     script.type = "text/javascript";
     script.src="ThreeCSG.js";
@@ -19,10 +19,10 @@ function gsubtract(fromob, ob) {
     var ob2_bsp = new ThreeBSP(ob2);
     var subtract_bsp = ob1_bsp.subtract(ob2_bsp);
     var geom = subtract_bsp.toGeometry();
-        geom.computeVertexNormals();
-// verts = geom.vertices;
-//for (let i = 0; i < verts.length; i++){	verts[i].setX(verts[i].x * -1);}
-//geom.verticesNeedUpdate = true;   
+    geom.computeVertexNormals();
+    // verts = geom.vertices;
+    //for (let i = 0; i < verts.length; i++){	verts[i].setX(verts[i].x * -1);}
+    //geom.verticesNeedUpdate = true;   
 
     return geom;
 }
@@ -64,7 +64,10 @@ function gintersection(fromob, ob) {
 
 
 
-function libloaded(){return true}
+function libloaded() {
+    return true
+}
+
 function subtract(parameters) {
     var ob1, ob2;
 
@@ -225,6 +228,7 @@ function union(parameters) {
     }
 
 }
+
 function adjusttexture(mate, nx, ny, ang, offsetX, offsetY) {
     if (mate.isMaterial) {
 
@@ -470,11 +474,11 @@ function gbox(x, y, z, center, buffer) {
 }
 
 function gsphere(r, sh, sv, center, buffer) {
-  //  var geo=new THREE.Geometry();
-    var geo= new THREE.SphereGeometry(r, sh, sv);
+    //  var geo=new THREE.Geometry();
+    var geo = new THREE.SphereGeometry(r, sh, sv);
     if (buffer) geo = new THREE.SphereBufferGeometry(r, sh, sv);
-  //  else geo = new THREE.SphereGeometry(r, sh, sv);
-    if(!center) geo.translate(r,r,r);
+    //  else geo = new THREE.SphereGeometry(r, sh, sv);
+    if (!center) geo.translate(r, r, r);
     return geo;
 }
 
@@ -486,15 +490,18 @@ function gcylinder(r1, r2, h, sh, sv, center, buffer) {
         return gcyl
     } else {
         var gcyl = new THREE.CylinderGeometry(r1, r2, h, sh, sv);
-        if (!center){ gcyl.translate(r1, h/2, r1);}
-       return gcyl}
+        if (!center) {
+            gcyl.translate(r1, h / 2, r1);
+        }
+        return gcyl
     }
+}
 
 
 function mesh(geo, mat) {
-    var me=new THREE.Mesh(geo, mat);
+    var me = new THREE.Mesh(geo, mat);
     me.castShadow = true; //default is false
-me.receiveShadow = true; //default
+    me.receiveShadow = true; //default
     return me;
 }
 
@@ -527,16 +534,16 @@ function vector(x, y, z) {
 */
 
 
-function material(texture,color) {
+function material(texture, color) {
     var mat = new THREE.MeshPhongMaterial();
-   
+
     if (color != undefined) mat.color = new THREE.Color(color);
-    if (texture != undefined &&  texture != "" && texture != null) mat.map = new THREE.TextureLoader().load(texture);
- 
+    if (texture != undefined && texture != "" && texture != null) mat.map = new THREE.TextureLoader().load(texture);
+
     mat.side = THREE.DoubleSide;
-  //  mat.depthWrite = false;
-    mat.transparent=true;
-     return mat;
+    //  mat.depthWrite = false;
+    mat.transparent = true;
+    return mat;
 
 }
 
@@ -552,303 +559,351 @@ function gplane(x, y, center, buffer) {
     }
 
 }
-function gettexture(textura){
-    var loader=new THREE.TextureLoader();
+
+function gettexture(textura) {
+    var loader = new THREE.TextureLoader();
     loader.load(textura);
     return loader;
 }
 
-function settexture(mat,textura){
-        var loader=new THREE.TextureLoader();
-    loader.load(textura,function(texture){mat.map=texture});
+function settexture(mat, textura) {
+    var loader = new THREE.TextureLoader();
+    loader.load(textura, function(texture) {
+        mat.map = texture
+    });
 
 }
 
-function box(x,y,z,texture,color,center){
-    try{
-    
-  //  if(texture==undefined || texture==null || texture=="") color=0x00aa00;
-   return mesh(gbox(x,y,z,center,false),material(texture,color));
+function box(x, y, z, texture, color, center) {
+    try {
+
+        //  if(texture==undefined || texture==null || texture=="") color=0x00aa00;
+        return mesh(gbox(x, y, z, center, false), material(texture, color));
+    } catch (er) {
+        alert(er);
     }
-    catch(er){alert(er);}
-         
-}
-function sphere(radius,sh,sv,texture,color,center){
-    try{
-        var m=mesh(gsphere(radius,sh,sv,center,false),material(texture,color));
-      //  if(!center || center!=undefined) m.transtate(radius,radius,radius);
-    return m;
-    }
-    catch(er){alert(er);} 
+
 }
 
-function cylinder(radius1,radius2,h,sh,sv,texture,color,center){
-    try{
-    return mesh(gcylinder(radius1,radius2,h,sh,sv,center,false),material(texture,color));
+function sphere(radius, sh, sv, texture, color, center) {
+    try {
+        var m = mesh(gsphere(radius, sh, sv, center, false), material(texture, color));
+        //  if(!center || center!=undefined) m.transtate(radius,radius,radius);
+        return m;
+    } catch (er) {
+        alert(er);
     }
-    catch(er){alert(er);}
 }
 
-function plane(x,y,texture,color,center){
-    try{
-        var ms=material(texture,color);
-        ms.side=THREE.DoubleSide;
-    return mesh(gplane(x,y,center,center),ms);
+function cylinder(radius1, radius2, h, sh, sv, texture, color, center) {
+    try {
+        return mesh(gcylinder(radius1, radius2, h, sh, sv, center, false), material(texture, color));
+    } catch (er) {
+        alert(er);
     }
-    catch(er){alert(er);}
+}
+
+function plane(x, y, texture, color, center) {
+    try {
+        var ms = material(texture, color);
+        ms.side = THREE.DoubleSide;
+        return mesh(gplane(x, y, center, center), ms);
+    } catch (er) {
+        alert(er);
+    }
 }
 /**/
 
-function structural(){
+function structural() {
 
-this.gflat=function(w,l,tk,center,buffer){
-    return gbox(l,tk,w,center,buffer);
+    this.gflat = function(w, l, tk, center, buffer) {
+        return gbox(l, tk, w, center, buffer);
+    }
+    this.gplate = function(w, l, tk, center, buffer) {
+        return gbox(l, tk, w, center, buffer);
+    }
+
+    this.gangle = function(w1, w2, l, tk, center, buffer) {
+
+        var bm = gbox(l, tk, w1, false, buffer);
+        var bc = gbox(l, w2 - tk, tk, false, buffer);
+        bc.translate(0, tk, 0);
+        bc.merge(bm);
+        if (center) bc.translate(-l / 2, -w2 / 2, -w1 / 2);
+
+
+        return bc;
+
+    }
+    this.gangle2 = function(l1, l2, lo, tk, center, buffer) {
+
+        var bm = gbox(lo, l1, l2, center, buffer);
+        var bc = bm.clone();
+        bc.translate(0, tk, -tk);
+        var an = gsubtract(bm, bc);
+        return an;
+
+    }
+    this.gplateedged = function(w, l, tk, radius, center, cdf, buffer) {
+        if (cdf === undefined) cdf = 30;
+        var boxx = gbox(l, tk, w - radius * 2).translate(0, 0, radius);
+        var boxy = gbox(l - radius * 2, tk, w).translate(radius, 0, 0);
+        var co1 = gcylinder(radius, radius, tk, cdf, cdf, false, false);
+        var co2 = co1.clone().translate(l - radius * 2, 0, 0);
+        var co3 = co1.clone().translate(l - radius * 2, 0, w - radius * 2);
+        var co4 = co1.clone().translate(0, 0, w - radius * 2);
+        boxx = gunion(boxx, boxy);
+        boxx = gunion(boxx, co1);
+        boxx = gunion(boxx, co2);
+        boxx = gunion(boxx, co3);
+        boxx = gunion(boxx, co4);
+        if (center) boxx.translate(-l / 2, -tk / 2, -w / 2);
+        return boxx;
+    }
+    this.gtube = function(D, l, tk, center, cdf, buffer) {
+        if (cdf === undefined) cdf = 30;
+        var co = gcylinder(D / 2, D / 2, l, cdf, cdf, true, false);
+        var ci = gcylinder(D / 2 - tk, D / 2 - tk, l, cdf, cdf, true, false);
+        var tu = gsubtract(co, ci);
+        ////
+        tu.rotateZ(Math.PI / 2); /////
+
+        if (!center) tu.translate(l / 2, D / 2, D / 2); ////  
+        //   if(!center) tu.translate(D/2,l/2,D/2);
+        return tu;
+
+    }
+    this.gpipe = function(D, l, tk, center, cdf, buffer) {
+        if (cdf === undefined) cdf = 30;
+        var ci = gcylinder(D / 2, D / 2, l, cdf, cdf, true, false);
+        var co = gcylinder(D / 2 + tk, D / 2 + tk, l, cdf, cdf, true, false);
+        var tu = gsubtract(co, ci);
+        tu.rotateZ(Math.PI / 2); /////
+
+        if (!center) tu.translate(l / 2, D / 2, D / 2); ////      
+        //    if(!center) tu.translate(D/2,l/2,D/2);
+        return tu;
+
+    }
+
+    this.gchannel = function(w, l, h, tk, center, buffer) {
+        var l1 = gbox(l, h, w, false, buffer);
+        var l2 = gbox(l, h, w - tk * 2, false, buffer);
+        l2.translate(0, tk, tk);
+
+        var ch = gsubtract(l1, l2);
+        if (center) ch.translate(-l / 2, -h / 2, -w / 2);
+        return ch;
+
+    }
+
+    this.ghbeam = function(w, l, h, tk, center, buffer) {
+
+        var l1 = gbox(l, h - 2 * tk, tk, true, buffer);
+        //    l1.translate(0,tk,w/2-tk);
+        var lt = gbox(l, tk, w, true, buffer);
+        var lb = lt.clone();
+        lt.translate(0, h / 2 + tk / 2, 0);
+        lb.translate(0, -h / 2 + tk / 2, 0);
+        var ch = new THREE.Geometry();
+        ch.merge(lt);
+        ch.merge(l1);
+        ch.merge(lb)
+
+        if (!center) ch.translate(l / 2, h / 2, w / 2);
+        return ch;
+
+    }
+    this.gbar = function(D, l, center, cdf, buffer) {
+        if (cdf === undefined) cdf = 30;
+
+        var ba = gcylinder(D / 2, D / 2, l, cdf, cdf, true, buffer);
+        ba.rotateZ(Math.PI / 2);
+        if (!center) ba.translate(l / 2, D / 2, D / 2);
+
+        return ba
+
+    }
+
+    this.gsquaretubing = function(w, h, l, tk, center, buffer) {
+        var l1 = gbox(l, h, w, center, buffer);
+        var l2 = gbox(l, h - tk * 2, w - tk * 2, center, buffer);
+        l2.translate(0, tk, tk);
+
+        var ch = gsubtract(l1, l2);
+        // if(!center) tu.translate(D/2,l/2,D/2);
+        return ch;
+
+    }
+
+    this.gsquaretubingedged = function(l, w, h, tk, rad, center, cdf, buffer) {
+        if (cdf === undefined) cdf = 30;
+        var l1 = this.gplateedged(h, w, l, rad, true, cdf, buffer) //.rotateZ(Math.PI/2);
+        var l2 = this.gplateedged(h - 2 * tk, w - 2 * tk, l, rad - tk, true, cdf, buffer) //.rotateZ(Math.PI/2);;
+        //  l2.translate(-tk,0,-tk);
+
+        var ch = gsubtract(l1, l2);
+        ch.rotateZ(Math.PI / 2);
+
+        if (!center) ch.translate(l / 2, w / 2, h / 2);
+
+        //    if(!center)ch.translate(w/2,l/2,h/2);;
+        return ch;
+
+    }
+    ///////////////
+
+    this.flat = function(w, l, tk, texture, color, center, buffer) {
+        return mesh(this.gflat(w, l, tk, center, buffer), material(texture, color));
+    }
+    this.plate = function(w, l, tk, texture, color, center, buffer) {
+        return mesh(this.gplate(w, l, tk, center, buffer), material(texture, color));
+    }
+
+    this.anglee = function(w, l, tk, texture, color, center, buffer) {
+
+        return mesh(this.gangle(w, l, tk, center, buffer), material(texture, color));
+
+    }
+    this.angle = function(l1, l2, lo, tk, texture, color, center, buffer) {
+
+        return mesh(this.gangle(l1, l2, lo, tk, center, buffer), material(texture, color));
+
+    }
+    this.plateedged = function(w, l, tk, radius, texture, color, center, cdf, buffer) {
+
+        return mesh(this.gplateedged(w, l, tk, radius, center, cdf, buffer), material(texture, color));
+    }
+    this.tube = function(D, l, tk, texture, color, center, cdf, buffer) {
+        //alert(color)
+        return mesh(this.gtube(D, l, tk, center, cdf, buffer), material(texture, color));
+
+    }
+    this.pipe = function(D, l, tk, texture, color, center, cdf, buffer) {
+
+        return mesh(this.gpipe(D, l, tk, center, cdf, buffer), material(texture, color));
+
+    }
+
+    this.channel = function(w, l, h, tk, texture, color, center, buffer) {
+
+        return mesh(this.gchannel(w, l, h, tk, center, buffer), material(texture, color));
+
+    }
+
+    this.hbeam = function(w, l, h, tk, texture, color, center, buffer) {
+
+        return mesh(this.ghbeam(w, l, h, tk, center, buffer), material(texture, color));
+    }
+    this.bar = function(D, l, texture, color, center, cdf, buffer) {
+        //  return gcylinder(D/2,D/2,l,30,30,center,buffer);
+        return mesh(this.gbar(D, l, center, cdf, buffer), material(texture, color));
+    }
+
+    this.squaretubing = function(w, h, l, tk, texture, color, center, buffer) {
+
+        return mesh(this.gsquaretubing(w, h, l, tk, center, buffer), material(texture, color));
+
+    }
+
+    this.squaretubingedged = function(l, w, h, tk, rad, texture, color, center, cdf, buffer) {
+        return mesh(this.gsquaretubingedged(l, w, h, tk, rad, center, cdf, buffer), material(texture, color));
+
+    }
+    ////////////////
 }
-this.gplate=function(w,l,tk,center,buffer){
-    return gbox(l,tk,w,center,buffer);
-}
 
-this.gangle=function(w1,w2,l,tk,center,buffer){
- 
-     var bm=gbox(l,tk,w1,false,buffer);
-    var bc=gbox(l,w2-tk,tk,false,buffer);
-    bc.translate(0,tk,0);
-    bc.merge(bm);
-    if(center) bc.translate(-l/2,-w2/2,-w1/2);
-    
+function cutMesh(from, ob) {
+    if (from.isMesh && ob.isMesh) {
+        //  var gfrom=new THREE.Geometry();
+        // var gob=new THREE.Geometry();
 
-    return bc;
- 
-}
-this.gangle2=function(l1,l2,lo,tk,center,buffer){
- 
-     var bm=gbox(lo,l1,l2,center,buffer);
-    var bc=bm.clone();
-    bc.translate(0,tk,-tk);
-   var an=gsubtract(bm,bc);
-    return an;
-   
-}
-this.gplateedged=function(w,l,tk,radius,center,cdf,buffer){
-    if(cdf===undefined) cdf=30;
-    var boxx=gbox(l,tk,w-radius*2).translate(0,0,radius);
-    var boxy=gbox(l-radius*2,tk,w).translate(radius,0,0);
-    var co1=gcylinder(radius,radius,tk,cdf,cdf,false,false);
-    var co2=co1.clone().translate(l-radius*2,0,0);
-    var co3=co1.clone().translate(l-radius*2,0,w-radius*2);
-    var co4=co1.clone().translate(0,0,w-radius*2);
-   boxx = gunion(boxx,boxy);
-    boxx = gunion(boxx,co1);
-    boxx = gunion(boxx,co2);
-    boxx = gunion(boxx,co3);
-   boxx = gunion(boxx,co4);
- if(center) boxx.translate(-l/2,-tk/2,-w/2);
-    return boxx;
-}
-this.gtube=function(D,l,tk,center,cdf,buffer){
-    if(cdf===undefined) cdf=30;   
-     var co=gcylinder(D/2,D/2,l,cdf,cdf,true,false);
-     var ci=gcylinder(D/2-tk,D/2-tk,l,cdf,cdf,true,false);
-     var tu=gsubtract(co,ci);
-     ////
-     tu.rotateZ(Math.PI/2);/////
- 
-       if(!center) tu.translate(l/2,D/2,D/2);   ////  
-  //   if(!center) tu.translate(D/2,l/2,D/2);
-     return tu;
-  
-}
-this.gpipe=function(D,l,tk,center,cdf,buffer){
-     if(cdf===undefined) cdf=30;  
-     var ci=gcylinder(D/2,D/2,l,cdf,cdf,true,false);
-     var co=gcylinder(D/2+tk,D/2+tk,l,cdf,cdf,true,false);
-     var tu=gsubtract(co,ci);
-       tu.rotateZ(Math.PI/2);/////
-    
-        if(!center) tu.translate(l/2,D/2,D/2);   ////      
- //    if(!center) tu.translate(D/2,l/2,D/2);
-     return tu;
-  
-}
-
-this.gchannel=function(w,l,h,tk,center,buffer){
-    var l1=gbox(l,h,w,false,buffer);
-    var l2=gbox(l,h,w-tk*2,false,buffer);
-    l2.translate(0,tk,tk);
-
-     var ch=gsubtract(l1,l2);
-     if(center) ch.translate(-l/2,-h/2,-w/2);
-     return ch;
-  
-}
-
-  this.ghbeam=function(w,l,h,tk,center,buffer){
-      
-         var l1=gbox(l,h-2*tk,tk,true,buffer);
-     //    l1.translate(0,tk,w/2-tk);
-    var lt=gbox(l,tk,w,true,buffer);
-    var lb=lt.clone();
-    lt.translate(0,h/2+tk/2,0);
-    lb.translate(0,-h/2+tk/2,0);
-    var ch= new THREE.Geometry();
-    ch.merge(lt);
-    ch.merge(l1);
-    ch.merge(lb)
-
-     if(!center)ch.translate(l/2,h/2,w/2);
-     return ch;
-
-     }
-this.gbar=function(D,l,center,cdf,buffer){
-       if(cdf===undefined) cdf=30;
-       
-       var ba=gcylinder(D/2,D/2,l,cdf,cdf,true,buffer);
-       ba.rotateZ(Math.PI/2);
-       if(!center) ba.translate(l/2,D/2,D/2);
-       
-     return ba
-  
-}
-
-this.gsquaretubing=function(w,h,l,tk,center,buffer){
-    var l1=gbox(l,h,w,center,buffer);
-    var l2=gbox(l,h-tk*2,w-tk*2,center,buffer);
-    l2.translate(0,tk,tk);
-
-     var ch=gsubtract(l1,l2);
-    // if(!center) tu.translate(D/2,l/2,D/2);
-     return ch;
-  
-}
-
-this.gsquaretubingedged=function(l,w,h,tk,rad,center,cdf,buffer){
-         if(cdf===undefined) cdf=30;
-    var l1=this.gplateedged(h,w,l,rad,true,cdf,buffer)//.rotateZ(Math.PI/2);
-    var l2=this.gplateedged(h-2*tk,w-2*tk,l,rad-tk,true,cdf,buffer)//.rotateZ(Math.PI/2);;
-  //  l2.translate(-tk,0,-tk);
-
-     var ch=gsubtract(l1,l2);
-     ch.rotateZ(Math.PI/2);
-     
-    if(!center)ch.translate(l/2,w/2,h/2);
-    
- //    if(!center)ch.translate(w/2,l/2,h/2);;
-     return ch;
-
-}
-///////////////
-
-this.flat=function(w,l,tk,texture,color,center,buffer){
-    return mesh(this.gflat(w,l,tk,center,buffer),material(texture,color));
-}
-this.plate=function(w,l,tk,texture,color,center,buffer){
-    return  mesh(this.gplate(w,l,tk,center,buffer),material(texture,color));
-}
-
-this.anglee=function(w,l,tk,texture,color,center,buffer){
- 
-    return mesh(this.gangle(w,l,tk,center,buffer),material(texture,color));
-  
-}
-this.angle=function(l1,l2,lo,tk,texture,color,center,buffer){
- 
-    return  mesh(this.gangle(l1,l2,lo,tk,center,buffer),material(texture,color));
-   
-}
-this.plateedged=function(w,l,tk,radius,texture,color,center,cdf,buffer){
-
-    return  mesh(this.gplateedged(w,l,tk,radius,center,cdf,buffer),material(texture,color));
-}
-this.tube=function(D,l,tk,texture,color,center,cdf,buffer){
-//alert(color)
-     return  mesh(this.gtube(D,l,tk,center,cdf,buffer),material(texture,color));
-  
-}
-this.pipe=function(D,l,tk,texture,color,center,cdf,buffer){
-
-     return  mesh(this.gpipe(D,l,tk,center,cdf,buffer),material(texture,color));
-  
-}
-
-this.channel=function(w,l,h,tk,texture,color,center,buffer){
-
-     return  mesh(this.gchannel(w,l,h,tk,center,buffer),material(texture,color));
-  
-}
-
-  this.hbeam=function(w,l,h,tk,texture,color,center,buffer){
-
-     return  mesh(this.ghbeam(w,l,h,tk,center,buffer),material(texture,color));
-  }
-this.bar=function(D,l,texture,color,center,cdf,buffer){
-   //  return gcylinder(D/2,D/2,l,30,30,center,buffer);
-  return  mesh(this.gbar(D,l,center,cdf,buffer),material(texture,color));
-}
-
-this.squaretubing=function(w,h,l,tk,texture,color,center,buffer){
-
-     return mesh(this.gsquaretubing(w,h,l,tk,center,buffer),material(texture,color));
-  
-}
-
-this.squaretubingedged=function(l,w,h,tk,rad,texture,color,center,cdf,buffer){
-     return  mesh(this.gsquaretubingedged(l,w,h,tk,rad,center,cdf,buffer),material(texture,color));
-  
-}
-////////////////
-}
-function cutMesh(from,ob){
-    if(from.isMesh && ob.isMesh){
-      //  var gfrom=new THREE.Geometry();
-       // var gob=new THREE.Geometry();
-      
-        var g1=from.geometry;
-        var g2=ob.geometry;
+        var g1 = from.geometry;
+        var g2 = ob.geometry;
         g1.rotateX(from.rotation.x);
         g1.rotateY(from.rotation.y);
         g1.rotateZ(from.rotation.z);
-        g1.translate(from.position.x,from.position.y,from.position.z);
-   //   alert(subtract)
-        
-      g2.rotateX(ob.rotation.x);
-       g2.rotateY(ob.rotation.y);
-       g2.rotateZ(ob.rotation.z);
-        g2.translate(ob.position.x,ob.position.y,ob.position.z);
-        
-             
-        
-  //      var ng=subtract({fromob:from,ob:ob});
-      var ng=subtract({fromob:g1,ob:g2});
-  
-        var nob=mesh(ng,from.material);
-        nob.rotation.set(from.rotation.x,from.rotation.y,from.rotation.z);
+        g1.translate(from.position.x, from.position.y, from.position.z);
+        //   alert(subtract)
+
+        g2.rotateX(ob.rotation.x);
+        g2.rotateY(ob.rotation.y);
+        g2.rotateZ(ob.rotation.z);
+        g2.translate(ob.position.x, ob.position.y, ob.position.z);
+
+
+
+        //      var ng=subtract({fromob:from,ob:ob});
+        var ng = subtract({
+            fromob: g1,
+            ob: g2
+        });
+
+        var nob = mesh(ng, from.material);
+        nob.rotation.set(from.rotation.x, from.rotation.y, from.rotation.z);
         return nob;
-    }
-    else alert("Is not a Mesh");
-    
-    
+    } else alert("Is not a Mesh");
+
+
 }
-function group(){
+
+function group() {
     return new THREE.Group();
 }
-function geometry(){
+
+function geometry() {
     return new THREE.Geometry();
 }
-           function chkfont(elem,body){
-                var body = document.getElementsByTagName('body')[0];
-     var dummy = document.createElement('div');
 
-     var dummyText = document.createTextNode('M');
-     dummy.appendChild(dummyText);
-     fontStyle=eedi.style.fontStyle;
-     dummy.setAttribute('style', fontStyle + ';position:absolute;top:0;left:0');
-     body.appendChild(dummy);
-     
-     result = dummy.offsetHeight;
-     alert(result);
+function chkfont(elem, body) {
+    var body = document.getElementsByTagName('body')[0];
+    var dummy = document.createElement('div');
 
-     body.removeChild(dummy);
-   }
-   function t_extura(pic){
-       return  new THREE.TextureLoader().load(pic);
-   }
+    var dummyText = document.createTextNode('M');
+    dummy.appendChild(dummyText);
+    fontStyle = eedi.style.fontStyle;
+    dummy.setAttribute('style', fontStyle + ';position:absolute;top:0;left:0');
+    body.appendChild(dummy);
+
+    result = dummy.offsetHeight;
+    alert(result);
+
+    body.removeChild(dummy);
+}
+
+function t_extura(pic) {
+    return new THREE.TextureLoader().load(pic);
+}
+
+function point(x, y, z) {
+    return new THREE.Vector3(x, y, z);
+
+}
+
+function line(points, width, color) {
+    var lin = new THREE.Geometry();
+    lin.vertices = points;
+    var mat = new THREE.LineBasicMaterial({
+        color: color,
+        linewidth: width
+    });
+    var linea = new THREE.Line(lin, mat);
+    return linea;
+
+}
+
+function dashedLine(points, width, color, size, gap) {
+    var lin = new THREE.Geometry();
+    lin.vertices = points;
+    var mat = new THREE.LineDashedMaterial({
+        color: color,
+        dashSize: size,
+        gapSize: gap,
+        linewidth: width
+    })
+
+    var linea = new THREE.Line(lin, mat);
+    // linea.computeLineDistances();
+    return linea;
+
+}
