@@ -926,8 +926,9 @@ function LJL() {
             ctx.fillStyle = "#" + color.toString(16);
             ctx.textAlign = "center";
             ctx.fillText(msg, c.width / 2, c.height / 1.2);
-             var tx = new THREE.CanvasTexture(c);
-             pl.material.map = tx;
+            var tx = new THREE.CanvasTexture(c);
+            pl.material.map = tx;
+            pl.renderOrder = 2;
             return pl;
         }
     }
