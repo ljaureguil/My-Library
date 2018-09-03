@@ -888,6 +888,7 @@ function line(points, width, color) {
         linewidth: width
     });
     var linea = new THREE.Line(lin, mat);
+    linea.castShadow = true;
     return linea;
 
 }
@@ -903,7 +904,58 @@ function dashedLine(points, width, color, size, gap) {
     })
 
     var linea = new THREE.Line(lin, mat);
-    // linea.computeLineDistances();
+    linea.castShadow = true;
     return linea;
+}
 
+function LJL() {
+    this.textLebel = function(msg, W, H, center, color, font) {
+        if (typeof msg === "string" || typeof msg === "number") {
+            var pl = plane(W, H, "", 0xffffff, center);
+
+            if (font === undefined) font = "150px Arial";
+            else font = "150px " + font;
+            var d = this.getTextDimentions(msg, font);
+            var w = d.w,
+                h = d.h; //alert(w+"\n\n"+h);
+            var c = document.createElement("canvas"); //alert(renderer.getPixelRatio ())
+            c.width = w;
+            c.height = h;
+            var ctx = c.getContext("2d");
+            ctx.font = font;
+            ctx.fillStyle = "#" + color.toString(16);
+            ctx.textAlign = "center";
+            ctx.fillText(msg, c.width / 2, c.height / 1.2);
+             var tx = new THREE.CanvasTexture(c);
+             pl.material.map = tx;
+            return pl;
+        }
+    }
+
+    this.getTextDimentions = function(txt, font) {
+        this.font = font;
+        if (this.font === undefined) this.font = "40px Arial";
+        this.element = document.createElement('canvas');
+        this.context = this.element.getContext("2d");
+        this.context.font = font; //alert( parseInt(this.font));
+        var result = {
+            w: this.context.measureText(txt).width * 1,
+            h: parseInt(this.font) * 1
+        }
+        return result;
+    }
+
+    this.getTextDimentions2 = function(font) {
+
+        var elem = document.getElementsByTagName('body')[0];
+        var tryText = document.createElement('p');
+        tryText.style.fontSize = font;
+        tryText.innerHTML = "M";
+
+        elem.appendChild(tryText);
+        result = tryText.offsetHeight
+        elem.removeChild(tryText);
+        return result;
+
+    }
 }
