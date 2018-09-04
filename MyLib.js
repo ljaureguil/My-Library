@@ -909,8 +909,9 @@ function dashedLine(points, width, color, size, gap) {
 }
 
 function LJL() {
-    this.textLebel = function(msg, W, H, center, color, font) {
+    this.textLebel = function(msg, W, H, center, color, font, frame) {
         if (typeof msg === "string" || typeof msg === "number") {
+
             var pl = plane(W, H, "", 0xffffff, center);
 
             if (font === undefined) font = "150px Arial";
@@ -919,11 +920,28 @@ function LJL() {
             var w = d.w,
                 h = d.h; //alert(w+"\n\n"+h);
             var c = document.createElement("canvas"); //alert(renderer.getPixelRatio ())
-            c.width = w;
-            c.height = h;
+            c.width = w + 30;
+            c.height = h + 20;
+            /////////
+            var corar = "000000"
+            corar = corar.split("");
+            var col = Number(color * 1).toString(16);
+            var co = col.split("");
+            col = corar.splice(0, 6 - co.length);
+            col = col.concat(co);
+            var cc = col.toString();
+            cc = "#" + cc.replace(/,/g, "");
+            /////////
+
             var ctx = c.getContext("2d");
             ctx.font = font;
-            ctx.fillStyle = "#" + color.toString(16);
+            ctx.fillStyle = cc; //"#" + color.toString(16);
+            if (frame) {
+                ctx.strokeStyle = ctx.fillStyle;
+                ctx.lineWidth = 10;
+                ctx.strokeRect(0, 0, c.width, c.height);
+            }
+
             ctx.textAlign = "center";
             ctx.fillText(msg, c.width / 2, c.height / 1.2);
             var tx = new THREE.CanvasTexture(c);
@@ -935,7 +953,7 @@ function LJL() {
 
     this.getTextDimentions = function(txt, font) {
         this.font = font;
-        if (this.font === undefined) this.font = "40px Arial";
+        if (this.font === undefined) this.font = "150px Arial";
         this.element = document.createElement('canvas');
         this.context = this.element.getContext("2d");
         this.context.font = font; //alert( parseInt(this.font));
@@ -957,6 +975,14 @@ function LJL() {
         result = tryText.offsetHeight
         elem.removeChild(tryText);
         return result;
+
+    }
+    this.toRadians = function(ang) {
+        return ang * Math.PI / 180;
+
+    }
+    this.toDeg = function(ang) {
+        return ang * 180 / Math.PI;
 
     }
 }
