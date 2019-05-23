@@ -879,7 +879,7 @@ function t_extura(pic) {
     return new THREE.TextureLoader().load(pic);
 }
 
-    function line(points, width, color) {
+function line(points, width, color) {
     var lin = new THREE.Geometry();
     lin.vertices = points;
     var mat = new THREE.LineBasicMaterial({
@@ -894,154 +894,154 @@ function t_extura(pic) {
 
 
 function LJL() {
-    
- this.arlebs=[];
-this.material=function (texture, color) {
-    var mat = new THREE.MeshPhongMaterial();
 
-    if (color != undefined) mat.color = new THREE.Color(color);
-    if (texture != undefined && texture != "" && texture != null) mat.map = new THREE.TextureLoader().load(texture);
+    this.arlebs = [];
+    this.material = function(texture, color) {
+        var mat = new THREE.MeshPhongMaterial();
 
-    mat.side = THREE.DoubleSide;
-    //  mat.depthWrite = false;
-    mat.transparent = true;
-    return mat;
+        if (color != undefined) mat.color = new THREE.Color(color);
+        if (texture != undefined && texture != "" && texture != null) mat.map = new THREE.TextureLoader().load(texture);
 
-}
+        mat.side = THREE.DoubleSide;
+        //  mat.depthWrite = false;
+        mat.transparent = true;
+        return mat;
 
-this.gplane=function (x, y, center, buffer) {
-    if (buffer) {
-        var g = new THREE.PlaneBufferGeometry(x, y);
-        if (!center) g.translate(x2, y / 2, 0);
-        return g;
-    } else {
-        var g = new THREE.PlaneGeometry(x, y);
-        if (!center) g.translate(x / 2, y / 2, 0);
-        return g;
     }
 
-}
-   
-    
-    
-    
-    this.gbox=function (x, y, z, center, buffer) {
-    var geo;
-    if (buffer) geo = new THREE.BoxBufferGeometry(x, y, z);
-    else geo = new THREE.BoxGeometry(x, y, z);
-    if (!center) {
-        geo.translate(x / 2, y / 2, z / 2);
-        return geo
-    } else return geo;
-}
-
-this.gsphere=function (r, sh, sv, center, buffer) {
-    //  var geo=new THREE.Geometry();
-    var geo = new THREE.SphereGeometry(r, sh, sv);
-    if (buffer) geo = new THREE.SphereBufferGeometry(r, sh, sv);
-    //  else geo = new THREE.SphereGeometry(r, sh, sv);
-    if (!center) geo.translate(r, r, r);
-    return geo;
-}
-
-this.gcylinder=function (r1, r2, h, sh, sv, center, buffer) {
-
-    if (buffer) {
-        var gcyl = new THREE.CylinderBufferGeometry(r1, r2, h, sh, sv);
-        if (!center) gcyl.translate(r1, h / 2, r1);
-        return gcyl
-    } else {
-        var gcyl = new THREE.CylinderGeometry(r1, r2, h, sh, sv);
-        if (!center) {
-            gcyl.translate(r1, h / 2, r1);
+    this.gplane = function(x, y, center, buffer) {
+        if (buffer) {
+            var g = new THREE.PlaneBufferGeometry(x, y);
+            if (!center) g.translate(x2, y / 2, 0);
+            return g;
+        } else {
+            var g = new THREE.PlaneGeometry(x, y);
+            if (!center) g.translate(x / 2, y / 2, 0);
+            return g;
         }
-        return gcyl
-    }
-}
 
-
-this.mesh=function(geo, mat) {
-    var me = new THREE.Mesh(geo, mat);
-    me.castShadow = true; //default is false
-    me.receiveShadow = true; //default
-    return me;
-}
-
-this.vector=function (x, y, z) {
-    return new THREE.Vector3(x, y, z);
-}
- this.box=function (x, y, z, texture, color, center) {
-    try {
-
-        //  if(texture==undefined || texture==null || texture=="") color=0x00aa00;
-        return this.mesh(this.gbox(x, y, z, center, false), this.material(texture, color));
-    } catch (er) {
-        alert(er);
     }
 
-}
 
-this.sphere=function (radius, sh, sv, texture, color, center) {
-    try {
-        var m = this.mesh(this.gsphere(radius, sh, sv, center, false), this.material(texture, color));
-        //  if(!center || center!=undefined) m.transtate(radius,radius,radius);
-        return m;
-    } catch (er) {
-        alert(er);
+
+
+    this.gbox = function(x, y, z, center, buffer) {
+        var geo;
+        if (buffer) geo = new THREE.BoxBufferGeometry(x, y, z);
+        else geo = new THREE.BoxGeometry(x, y, z);
+        if (!center) {
+            geo.translate(x / 2, y / 2, z / 2);
+            return geo
+        } else return geo;
     }
-}
 
-this.cylinder=function (radius1, radius2, h, sh, sv, texture, color, center) {
-    try {
-        return this.mesh(this.gcylinder(radius1, radius2, h, sh, sv, center, false), this.material(texture, color));
-    } catch (er) {
-        alert(er);
+    this.gsphere = function(r, sh, sv, center, buffer) {
+        //  var geo=new THREE.Geometry();
+        var geo = new THREE.SphereGeometry(r, sh, sv);
+        if (buffer) geo = new THREE.SphereBufferGeometry(r, sh, sv);
+        //  else geo = new THREE.SphereGeometry(r, sh, sv);
+        if (!center) geo.translate(r, r, r);
+        return geo;
     }
-}
 
-this.plane=function (x, y, texture, color, center) {
-    try {
-        var ms = this.material(texture, color);
-        ms.side = THREE.DoubleSide;
-        return this.mesh(this.gplane(x, y, center, center), ms);
-    } catch (er) {
-        alert(er);
+    this.gcylinder = function(r1, r2, h, sh, sv, center, buffer) {
+
+        if (buffer) {
+            var gcyl = new THREE.CylinderBufferGeometry(r1, r2, h, sh, sv);
+            if (!center) gcyl.translate(r1, h / 2, r1);
+            return gcyl
+        } else {
+            var gcyl = new THREE.CylinderGeometry(r1, r2, h, sh, sv);
+            if (!center) {
+                gcyl.translate(r1, h / 2, r1);
+            }
+            return gcyl
+        }
     }
-}   
-    
-    this.point=function(x, y, z) {
-    return new THREE.Vector3(x, y, z);
-}
 
-    this.line=function(points, width, color) {
-    var lin = new THREE.Geometry();
-    lin.vertices = points;
-    var mat = new THREE.LineBasicMaterial({
-        color: color,
-        linewidth: width
-    });
-    var linea = new THREE.Line(lin, mat);
-    linea.castShadow = true;
-    return linea;
 
-}
+    this.mesh = function(geo, mat) {
+        var me = new THREE.Mesh(geo, mat);
+        me.castShadow = true; //default is false
+        me.receiveShadow = true; //default
+        return me;
+    }
 
-    this.dashedLine=function (points, width, color, size, gap) {
-    var lin = new THREE.Geometry();
-    lin.vertices = points;
-    var mat = new THREE.LineDashedMaterial({
-        color: color,
-        dashSize: size,
-        gapSize: gap,
-        linewidth: width
-    })
+    this.vector = function(x, y, z) {
+        return new THREE.Vector3(x, y, z);
+    }
+    this.box = function(x, y, z, texture, color, center) {
+        try {
 
-    var linea = new THREE.Line(lin, mat);
-    linea.castShadow = true;
-    return linea;
-}
+            //  if(texture==undefined || texture==null || texture=="") color=0x00aa00;
+            return this.mesh(this.gbox(x, y, z, center, false), this.material(texture, color));
+        } catch (er) {
+            alert(er);
+        }
 
-     this.textLebel = function(msg, W, H, center, color,toCamera, font, frame) {
+    }
+
+    this.sphere = function(radius, sh, sv, texture, color, center) {
+        try {
+            var m = this.mesh(this.gsphere(radius, sh, sv, center, false), this.material(texture, color));
+            //  if(!center || center!=undefined) m.transtate(radius,radius,radius);
+            return m;
+        } catch (er) {
+            alert(er);
+        }
+    }
+
+    this.cylinder = function(radius1, radius2, h, sh, sv, texture, color, center) {
+        try {
+            return this.mesh(this.gcylinder(radius1, radius2, h, sh, sv, center, false), this.material(texture, color));
+        } catch (er) {
+            alert(er);
+        }
+    }
+
+    this.plane = function(x, y, texture, color, center) {
+        try {
+            var ms = this.material(texture, color);
+            ms.side = THREE.DoubleSide;
+            return this.mesh(this.gplane(x, y, center, center), ms);
+        } catch (er) {
+            alert(er);
+        }
+    }
+
+    this.point = function(x, y, z) {
+        return new THREE.Vector3(x, y, z);
+    }
+
+    this.line = function(points, width, color) {
+        var lin = new THREE.Geometry();
+        lin.vertices = points;
+        var mat = new THREE.LineBasicMaterial({
+            color: color,
+            linewidth: width
+        });
+        var linea = new THREE.Line(lin, mat);
+        linea.castShadow = true;
+        return linea;
+
+    }
+
+    this.dashedLine = function(points, width, color, size, gap) {
+        var lin = new THREE.Geometry();
+        lin.vertices = points;
+        var mat = new THREE.LineDashedMaterial({
+            color: color,
+            dashSize: size,
+            gapSize: gap,
+            linewidth: width
+        })
+
+        var linea = new THREE.Line(lin, mat);
+        linea.castShadow = true;
+        return linea;
+    }
+
+    this.textLebel = function(msg, W, H, center, color, toCamera, font, frame) {
         if (typeof msg === "string" || typeof msg === "number") {
 
             var pl = this.plane(W, H, "", 0xffffff, center);
@@ -1077,13 +1077,13 @@ this.plane=function (x, y, texture, color, center) {
             ctx.textAlign = "center";
             ctx.fillText(msg, c.width / 2, c.height / 1.2);
             /////
-           
+
             var tx = new THREE.CanvasTexture(c);
             pl.material.map = tx;
-         
-       pl.renderOrder = 2;
-       if(toCamera===undefined) toCamera=true;
-       pl.toCamera=toCamera
+
+            pl.renderOrder = 2;
+            if (toCamera === undefined) toCamera = true;
+            pl.toCamera = toCamera
             this.arlebs.push(pl);
             return pl;
         }
@@ -1123,79 +1123,117 @@ this.plane=function (x, y, texture, color, center) {
         return ang * 180 / Math.PI;
 
     }
-    
-    this.chromeMaterial=function(cubeCam,color){
-        if(color===undefined) color=0xffffff;
-           var chromeMt =new THREE.MeshPhongMaterial( { color: color, roughness: 1, metalness: 0, envMap: cubeCam.renderTarget.texture } );
 
-        
-        
+    this.chromeMaterial = function(cubeCam, color) {
+        if (color === undefined) color = 0xffffff;
+        var chromeMt = new THREE.MeshPhongMaterial({
+            color: color,
+            roughness: 1,
+            metalness: 0,
+            envMap: cubeCam.renderTarget.texture
+        });
+
+
+
         return chromeMt
     }
-    this.gText=function(txt,urlFont,callback){
-     var loader = new THREE.FontLoader();
-    loader.load( urlFont, function ( font ) {
+    this.gText = function(txt, urlFont, parameters, callback) {
 
-      var geometry = new THREE.TextGeometry( txt, {
-        font: font,
-        size: 100,
-        height: 20,
-        curveSegments: 12,
-        bevelEnabled: true,
-        bevelThickness: 35,
-        bevelSize: 8,
-        bevelSegments: 5
-      } );
-   callback(geometry);     
-  //    return gText;
-    });
-    }
-    this.Texto=function(txt,urlFont,mat,callback){ 
-        var m=mesh();
-    //     var g=new THREE.TextGeometry();
-      
-    this.gText(txt,urlFont,function(geo){
-   if(mat===undefined)mat= material("",0xbbbbbb);
-   var m= mesh(geo,mat);
-   callback(m);
-   })
-  /*  */
- 
-    return m
-    //m
-    
-    
-    /*
-        
-          var loader = new THREE.FontLoader();
-    loader.load( 'https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function ( font ) {
 
-      var geometry = new THREE.TextGeometry( 'Grupo  209', {
-        font: font,
-        size: 100,
-        height: 20,
-        curveSegments: 12,
-        bevelEnabled: true,
-        bevelThickness: 35,
-        bevelSize: 8,
-        bevelSegments: 5
-      } );
-   
-        
-        
-        
-        
-        */
-        
-        
-        
+        var loader = new THREE.FontLoader();
+
+        loader.load(urlFont, function(font) {
+
+            if (parameters === undefined || parameters === "" || parameters === null) {
+                parameters = {
+
+                    size: 100,
+                    height: 20,
+                    curveSegments: 12,
+                    bevelEnabled: true,
+                    bevelThickness: 35,
+                    bevelSize: 8,
+                    bevelSegments: 5
+                }
+                parameters.font = font;
+            }
+            parameters.font = font;
+
+
+            var geometry = new THREE.TextGeometry(txt, parameters);
+            callback(geometry);
+            //    return gText;
+        });
+
+
     }
-    
-    
-    
-   return this;
+    this.Texto = function(txt, urlFont, mat, parameters, callback) {
+        var m = mesh();
+        //     var g=new THREE.TextGeometry();
+
+        this.gText(txt, urlFont, parameters, function(geo) {
+            if (mat === undefined) mat = material("", 0xbbbbbb);
+            var m = mesh(geo, mat);
+            callback(m);
+        })
+
+        return m
+    }
+
+    this.loadScript = function(url, callback) {
+
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        var code = loadDoc(url);
+        try {
+            s.appendChild(document.createTextNode(code));
+            document.body.appendChild(s); //
+            callback();
+        } catch (e) {
+            s.text = code;
+            document.body.appendChild(s);
+            callback();
+        }
+    }
+
+
+
+    this.loadScript = function(url, callback) {
+
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        var code = loadDoc(url);
+        try {
+            s.appendChild(document.createTextNode(code));
+            document.body.appendChild(s); //
+            callback();
+        } catch (e) {
+            s.text = code;
+            document.body.appendChild(s);
+            callback();
+        }
+    }
+
+    this.loadDoc = function(url) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("GET", url, false);
+        xhttp.send();
+        calback();
+        return xhttp.responseText;
+    }
+
+    this.takeScreenshotPC = function(rebderer, scene, camera, callback) {
+        var w = window.open('', '');
+        w.document.title = "Download...";
+        //w.document.body.style.backgroundColor = "red";
+        var img = new Image();
+        // Without 'preserveDrawingBuffer' set to true, we must render now
+        renderer.render(scene, camera);
+        img.src = renderer.domElement.toDataURL();
+        w.document.body.appendChild(img);
+        calback();
+    }
+
+
+    return this;
 }
-
-
-
-
