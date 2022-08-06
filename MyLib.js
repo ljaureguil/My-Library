@@ -619,6 +619,14 @@ function plane(x, y, texture, color, center) {
 /**/
 
 function structural() {
+    this.gGusset=function (w,h,tk){
+var shape = new THREE.Shape();
+  shape.moveTo(0,0);
+  shape.lineTo(w,h);
+  shape.lineTo(w,0);
+const extrudeSettings = {amount:tk, bevelEnabled: false};
+return new THREE.ExtrudeGeometry( shape, extrudeSettings );
+}
 
     this.gflat = function(w, l, tk, center, buffer) {
         return gbox(l, tk, w, center, buffer);
