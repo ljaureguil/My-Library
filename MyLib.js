@@ -1049,6 +1049,49 @@ function LJL() {
         return linea;
     }
 
+
+    this.textLebel2 = function(msg, W, H, color, params){
+          var c = document.createElement("canvas"); //alert(renderer.getPixelRatio ()) \
+       var ctx = c.getContext("2d");
+           c.width = W + 30;//t.w
+    c.height = H + 20;//t.h
+        if(params!=undefined){
+       if(params.font!=undefined) ctx.font=H+"px "+params.font;
+        else font=H+'px serif';
+        if(params.background_color!=undefined){ctx.fillStyle=params.background_color; ctx.fillRect(0,0,c.width,c.height)}//=params.background_color; 
+ 
+        }
+       //const t = ctx.measureText(msg); // TextMetrics object
+   const t=this.getTextDimentions(msg, H+"px "+params.font);
+   c.width=t.w;
+   c.height-t.h;
+         ctx.fillStyle=color;
+    if (params.frame!=undefined) {
+        if(params.frams){
+        ctx.strokeStyle = ctx.fillStyle;
+        ctx.lineWidth = 3;
+        ctx.strokeRect(0, 0, c.width, c.height);
+   }
+    }
+
+    ctx.textAlign = "center";
+    ctx.fillText(msg, c.width / 2, c.height / 2.2);//
+       texture = new THREE.CanvasTexture(c);
+       const material = new THREE.SpriteMaterial( { map: texture, color: 0xffffff } );
+       
+       const sprite = new THREE.Sprite( material );
+
+      if(params!=undefined){if(params.scale!=undefined){sprite.scale.set(params.scale.x, params.scale.y, params.scale.z);}}  
+       return sprite;
+
+    }
+
+
+
+
+
+
+  
     this.textLebel = function(msg, W, H, center, color, toCamera, font, frame) {
         if (typeof msg === "string" || typeof msg === "number") {
 
