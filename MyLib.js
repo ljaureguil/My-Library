@@ -1053,29 +1053,35 @@ function LJL() {
     this.textLebel2 = function(msg, W, H, color, params){
           var c = document.createElement("canvas"); //alert(renderer.getPixelRatio ()) \
        var ctx = c.getContext("2d");
-           c.width = W + 30;//t.w
-    c.height = H + 20;//t.h
-        if(params!=undefined){
-       if(params.font!=undefined) ctx.font=H+"px "+params.font;
-        else font=H+'px serif';
+        ctx.textAlign = "center";
+              ctx.fillStyle=color;
+       
+         if(params!=undefined){
+             var font='20px serif';
+        if(params.font!=undefined) font=params.font;
+        ctx.font
+        var width = ctx.measureText(msg).width;
+        if(width>c.width) ctx.scale(c.width / width, 1);
+        var z=this.getTextDimentions(msg,params.font)
+            c.width = W + 10;//z.w;////t.w
+         //   c.height=z.h;
         if(params.background_color!=undefined){ctx.fillStyle=params.background_color; ctx.fillRect(0,0,c.width,c.height)}//=params.background_color; 
- 
-        }
-       //const t = ctx.measureText(msg); // TextMetrics object
-   const t=this.getTextDimentions(msg, H+"px "+params.font);
-   c.width=t.w;
-   c.height-t.h;
-         ctx.fillStyle=color;
-    if (params.frame!=undefined) {
-        if(params.frams){
+
+
+ ctx.fillStyle=color;
+        ctx.fillText(msg, 5, W-5);
+         }
+
+  
+    if (params.frame!=undefined) {//alert("jjjjj")
+        if(params.frame){
+            ctx.fillStyle=color;
         ctx.strokeStyle = ctx.fillStyle;
         ctx.lineWidth = 3;
         ctx.strokeRect(0, 0, c.width, c.height);
    }
     }
 
-    ctx.textAlign = "center";
-    ctx.fillText(msg, c.width / 2, c.height / 2.2);//
        texture = new THREE.CanvasTexture(c);
        const material = new THREE.SpriteMaterial( { map: texture, color: 0xffffff } );
        
@@ -1086,12 +1092,6 @@ function LJL() {
 
     }
 
-
-
-
-
-
-  
     this.textLebel = function(msg, W, H, center, color, toCamera, font, frame) {
         if (typeof msg === "string" || typeof msg === "number") {
 
