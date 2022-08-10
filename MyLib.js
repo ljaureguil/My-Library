@@ -1049,48 +1049,120 @@ function LJL() {
         return linea;
     }
 
-
     this.textLebel2 = function(msg, W, H, color, params){
-          var c = document.createElement("canvas"); //alert(renderer.getPixelRatio ()) \
-       var ctx = c.getContext("2d");
-        ctx.textAlign = "center";
-              ctx.fillStyle=color;
-       
-         if(params!=undefined){
-             var font='20px serif';
-        if(params.font!=undefined) font=params.font;
-        ctx.font
+        var c = document.createElement("canvas"); //alert(renderer.getPixelRatio ()) \
+        var ctx = c.getContext("2d");
+         ctx.textAlign = "center";
+               ctx.fillStyle=color;
+
+   //  var ctx = c.getContext("2d");
+     ctx.font = font;//"30px Arial";
+     ctx.fillStyle=color;
         var width = ctx.measureText(msg).width;
-        if(width>c.width) ctx.scale(c.width / width, 1);
-        var z=this.getTextDimentions(msg,params.font)
-            c.width = W + 10;//z.w;////t.w
-         //   c.height=z.h;
-        if(params.background_color!=undefined){ctx.fillStyle=params.background_color; ctx.fillRect(0,0,c.width,c.height)}//=params.background_color; 
+       //  if(width>c.width) ctx.scale(c.width / width, 1);
+     c.width=width+10;
+
+     ctx = c.getContext("2d")
 
 
- ctx.fillStyle=color;
-        ctx.fillText(msg, 5, W-5);
-         }
 
-  
-    if (params.frame!=undefined) {//alert("jjjjj")
-        if(params.frame){
-            ctx.fillStyle=color;
-        ctx.strokeStyle = ctx.fillStyle;
-        ctx.lineWidth = 3;
-        ctx.strokeRect(0, 0, c.width, c.height);
-   }
-    }
 
-       texture = new THREE.CanvasTexture(c);
-       const material = new THREE.SpriteMaterial( { map: texture, color: 0xffffff } );
-       
-       const sprite = new THREE.Sprite( material );
 
-      if(params!=undefined){if(params.scale!=undefined){sprite.scale.set(params.scale.x, params.scale.y, params.scale.z);}}  
-       return sprite;
+        
+     if(params!=undefined){
+        var font='20px serif';
+   if(params.font!=undefined) font=params.font;
+   ctx.font
 
-    }
+   var z=this.getTextDimentions(msg,params.font)
+       c.width = W// + 10;//z.w;////t.w
+
+   if(params.background_color!=undefined){ctx.fillStyle=params.background_color; ctx.fillRect(0,0,c.width,c.height)}//=params.background_color; 
+     }
+
+
+if (params.frame!=undefined) {//alert("jjjjj")
+   if(params.frame){
+       ctx.fillStyle=color;
+   ctx.strokeStyle = ctx.fillStyle;
+   ctx.lineWidth = 3;
+   ctx.strokeRect(0, 0, c.width, c.height);
+}
+}
+
+
+
+
+
+
+
+
+
+     
+     ctx.font = font;
+     ctx.fillStyle=color;
+      ctx.fillText(msg,5,50);//alert(width+"----"+c.width);
+
+
+
+
+
+
+
+
+      
+        texture = new THREE.ImageUtils.loadTexture( c.toDataURL() )
+        //new THREE.CanvasTexture(c);
+
+        const material = new THREE.SpriteMaterial( { map: texture, color: 0xffffff } );
+        
+        const sprite = new THREE.Sprite( material );
+ 
+       if(params!=undefined){if(params.scale!=undefined){sprite.scale.set(params.scale.x, params.scale.y, params.scale.z);}}  
+        return sprite;
+ 
+}
+this.textLebel22 = function(msg, W, H, color, params){
+    var c = document.createElement("canvas"); //alert(renderer.getPixelRatio ()) \
+    var ctx = c.getContext("2d");
+     ctx.textAlign = "center";
+           ctx.fillStyle=color;
+    
+      if(params!=undefined){
+          var font='20px serif';
+     if(params.font!=undefined) font=params.font;
+     ctx.font
+     var width = ctx.measureText(msg).width;
+     if(width>c.width) ctx.scale(c.width / width, 1);
+     var z=this.getTextDimentions(msg,params.font)
+         c.width = W + 10;//z.w;////t.w
+      //   c.height=z.h;
+     if(params.background_color!=undefined){ctx.fillStyle=params.background_color; ctx.fillRect(0,0,c.width,c.height)}//=params.background_color; 
+
+
+ctx.fillStyle=color;
+     ctx.fillText(msg, 5, W-5);
+      }
+
+
+ if (params.frame!=undefined) {//alert("jjjjj")
+     if(params.frame){
+         ctx.fillStyle=color;
+     ctx.strokeStyle = ctx.fillStyle;
+     ctx.lineWidth = 3;
+     ctx.strokeRect(0, 0, c.width, c.height);
+}
+ }
+
+    texture = new THREE.CanvasTexture(c);
+    const material = new THREE.SpriteMaterial( { map: texture, color: 0xffffff } );
+    
+    const sprite = new THREE.Sprite( material );
+
+   if(params!=undefined){if(params.scale!=undefined){sprite.scale.set(params.scale.x, params.scale.y, params.scale.z);}}  
+    return sprite;
+
+}
 
     this.textLebel = function(msg, W, H, center, color, toCamera, font, frame) {
         if (typeof msg === "string" || typeof msg === "number") {
