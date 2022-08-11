@@ -1052,29 +1052,19 @@ function LJL() {
     this.textLebel2 = function(msg, W, H, color, params){
         var c = document.createElement("canvas"); //alert(renderer.getPixelRatio ()) \
         var ctx = c.getContext("2d");
-         ctx.textAlign = "center";
-               ctx.fillStyle=color;
-
-   //  var ctx = c.getContext("2d");
-     ctx.font = font;//"30px Arial";
+     
+         ctx.font = params.font;//"30px Arial";
      ctx.fillStyle=color;
         var width = ctx.measureText(msg).width;
        //  if(width>c.width) ctx.scale(c.width / width, 1);
      c.width=width+10;
-
-     ctx = c.getContext("2d")
-
-
-
-
-
-        
+    ctx = c.getContext("2d")
      if(params!=undefined){
         var font='20px serif';
    if(params.font!=undefined) font=params.font;
-   ctx.font
+   ctx.font=font;
 
-   var z=this.getTextDimentions(msg,params.font)
+   var z=this.getTextDimentions(msg+" ",params.font)
        c.width = W// + 10;//z.w;////t.w
 
    if(params.background_color!=undefined){ctx.fillStyle=params.background_color; ctx.fillRect(0,0,c.width,c.height)}//=params.background_color; 
@@ -1091,23 +1081,12 @@ if (params.frame!=undefined) {//alert("jjjjj")
 }
 
 
-
-
-
-
-
-
-
      
      ctx.font = font;
+     var x = c.width / 2;
+     ctx.textAlign = "center";
      ctx.fillStyle=color;
-      ctx.fillText(msg,5,50);//alert(width+"----"+c.width);
-
-
-
-
-
-
+      ctx.fillText(msg,x,50);//alert(width+"----"+c.width);
 
 
       
