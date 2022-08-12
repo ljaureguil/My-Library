@@ -1033,7 +1033,7 @@ function LJL() {
         return linea;
 
     }
-  this.lineSegments = function(points, width, color) {
+    this.lineSegments = function(points, width, color) {
         var lin = new THREE.Geometry();
         lin.vertices = points;
         var mat = new THREE.LineBasicMaterial({
@@ -1060,7 +1060,7 @@ function LJL() {
         return linea;
     }
 
-    this.textLebel2 = function(msg, W, H, color, params){
+    this.tag = function(msg, W, H, color, params){
         var c = document.createElement("canvas"); //alert(renderer.getPixelRatio ()) \
         var ctx = c.getContext("2d");
      
@@ -1112,6 +1112,7 @@ if (params.frame!=undefined) {//alert("jjjjj")
         return sprite;
  
 }
+
 
     this.textLebel = function(msg, W, H, center, color, toCamera, font, frame) {
         if (typeof msg === "string" || typeof msg === "number") {
