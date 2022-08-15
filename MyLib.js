@@ -8,8 +8,8 @@
     document.appendChild(script);
  */
 var Obj, state = false;
-/**/
-
+/**/v
+var tmetal="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT413jDECPcWpExKfDvY4QqegtPfXIYelonQEJspu8ZNyvi1_--74DdoMmGUOPw6DOcRes&usqp=CAU"
 function gsubtract(fromob, ob) {
     var ob1 = fromob,
         ob2 = ob,
