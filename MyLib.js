@@ -629,6 +629,27 @@ var shape = new THREE.Shape();
 const extrudeSettings = {amount:tk, bevelEnabled: false};
 return new THREE.ExtrudeGeometry( shape, extrudeSettings );
 }
+this.gShape=function (points,h){
+ 
+    var shape = new THREE.Shape(points);
+ 
+    const extrudeSettings = {amount:h, bevelEnabled: false};
+    return new THREE.ExtrudeGeometry( shape, extrudeSettings );
+   
+}
+    this.Shape=function (points,h,texture,color){
+        
+        var g= this.gShape(points,h)
+        var m=new THREE.Mesh();
+        m.geometry=g;
+        m.material=new THREE.MeshPhongMaterial();
+       // m.material.map=new THREE.ImageUtils.loadTexture( texture ); alert(shape);
+        if(color!=undefined) m.material.color=color;
+        else m.material.color=0xffffff;
+
+        return m;
+        }  
+
 
     this.gflat = function(w, l, tk, center, buffer) {
         return gbox(l, tk, w, center, buffer);
@@ -909,10 +930,12 @@ function LJL() {
     this.tmetal="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT413jDECPcWpExKfDvY4QqegtPfXIYelonQEJspu8ZNyvi1_--74DdoMmGUOPw6DOcRes&usqp=CAU"
 
     this.arlebs = [];
+
+
     this.material = function(texture, color) {
          var mat = new THREE.MeshPhongMaterial();
         if (color != undefined) mat.color = new THREE.Color(color);
-        alert(tmetal)
+      //  alert(tmetal)
         if (texture != undefined && texture != "" && texture != null) mat.map = new THREE.TextureLoader().load(texture);
        mat.side = THREE.DoubleSide;
          mat.transparent = true;
@@ -1068,7 +1091,7 @@ function LJL() {
         var ctx = c.getContext("2d");
      
          ctx.font = params.font;//"30px Arial";
-     ctx.fillStyle=color;
+   //  ctx.fillStyle=color;
         var width = ctx.measureText(msg).width;
        //  if(width>c.width) ctx.scale(c.width / width, 1);
      c.width=width+10;
@@ -1081,7 +1104,8 @@ function LJL() {
    var z=this.getTextDimentions(msg+" ",params.font)
        c.width = W// + 10;//z.w;////t.w
 
-   if(params.background_color!=undefined){ctx.fillStyle=params.background_color; ctx.fillRect(0,0,c.width,c.height)}//=params.background_color; 
+   if(params.background_color!=undefined){ctx.fillStyle=params.background_color; ctx.fillRect(0,0,c.width,c.height)}//=params.background_color;
+   else { ctx.fillStyle="rgba(200,200,200,.3)"; ctx.fillRect(0,0,c.width,c.height)}
      }
 
 
