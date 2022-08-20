@@ -847,7 +847,24 @@ this.gShape=function (points,h){
     }
     ////////////////
 }
-
+function cutG(from,ob){
+    var ob1 = from,
+        ob2 = ob,
+        geom = from;
+    if (from.isGeometry) ob1 = from;
+    if (from.isBufferGeometry) ob1 = new THREE.Geometry().fromBufferGeometry(fromob);
+    if (ob.isGeometry) ob2 = ob;
+    if (ob.isBufferGeometry) ob2 = new THREE.Geometry().fromBufferGeometry(ob); 
+     var ob1_bsp = new ThreeBSP(from);
+    var ob2_bsp = new ThreeBSP(ob);
+     var subtract_bsp = ob1_bsp.subtract(ob2_bsp);
+    var geom = subtract_bsp.toGeometry();
+    geom.computeVertexNormals();
+   var  verts = geom.vertices;
+    for (let i = 0; i < verts.length; i++){	verts[i].setX(verts[i].x * -1);}
+    geom.verticesNeedUpdate = true;   
+       return geom;
+}
 function cutM(fromM, M){
     var a=new THREE.Geometry(),b=new THREE.Geometry()
       a=fromM.geometry.clone()
