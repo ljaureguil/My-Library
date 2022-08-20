@@ -927,7 +927,8 @@ function line(points, width, color) {
 
 
 function LJL() {
-    this.tmetal="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT413jDECPcWpExKfDvY4QqegtPfXIYelonQEJspu8ZNyvi1_--74DdoMmGUOPw6DOcRes&usqp=CAU"
+ //   this.tmetal="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT413jDECPcWpExKfDvY4QqegtPfXIYelonQEJspu8ZNyvi1_--74DdoMmGUOPw6DOcRes&usqp=CAU"
+    this.tmetal="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuTTB-NXkpu7X_SV42LBbdS5npnlL94PiVEJjEdUsYChvvfc34jIoMTmKHnJFRw7kcEGk&usqp=CAU"
 
     this.arlebs = [];
 
@@ -1086,59 +1087,6 @@ function LJL() {
         return linea;
     }
 
-    this.tag2 = function(msg, W, H, color, params){
-        var c = document.createElement("canvas"); //alert(renderer.getPixelRatio ()) \
-        var ctx = c.getContext("2d");
-     alert("hhhh")
-         ctx.font = params.font;//"30px Arial";
-   //  ctx.fillStyle=color;
-        var width = ctx.measureText(msg).width;
-       //  if(width>c.width) ctx.scale(c.width / width, 1);
-     c.width=width+10;
-    ctx = c.getContext("2d")
-     if(params!=undefined){
-        var font='20px serif';
-   if(params.font!=undefined) font=params.font;
-   ctx.font=font;
-
-   var z=this.getTextDimentions(msg+" ",params.font)
-       c.width = W// + 10;//z.w;////t.w
-
-   if(params.background_color!=undefined){ctx.fillStyle=params.background_color; ctx.fillRect(0,0,c.width,c.height)}//=params.background_color;
-   else { ctx.fillStyle="rgba(200,200,200,.3)"; ctx.fillRect(0,0,c.width,c.height)}
-     }
-
-
-if (params.frame!=undefined) {//alert("jjjjj")
-   if(params.frame){
-       ctx.fillStyle=color;
-   ctx.strokeStyle = ctx.fillStyle;
-   ctx.lineWidth = 3;
-   ctx.strokeRect(0, 0, c.width, c.height);
-}
-}
-
-
-     
-     ctx.font = font;
-     var x = c.width / 2;
-     ctx.textAlign = "center";
-     ctx.fillStyle=color;
-      ctx.fillText(msg,x,50);//alert(width+"----"+c.width);
-
-
-      
-        texture = new THREE.ImageUtils.loadTexture( c.toDataURL() )
-        //new THREE.CanvasTexture(c);
-
-        const material = new THREE.SpriteMaterial( { map: texture, color: 0xffffff } );
-        
-        const sprite = new THREE.Sprite( material );
- 
-       if(params!=undefined){if(params.scale!=undefined){sprite.scale.set(params.scale.x, params.scale.y, params.scale.z);}}  
-        return sprite;
- 
-}
 this.tag = function(params){
 
     if(params.msg!=undefined){
@@ -1200,66 +1148,6 @@ this.tag = function(params){
      }
     else alert("not a Mesage")
 }
-
-this.tag3 = function(msg,params){
-
-    if(msg!=undefined){
-        var c = document.createElement("canvas"); //alert(renderer.getPixelRatio ()) \
-        var ctx = c.getContext("2d");
-        var font = '150px serif',color="white",msg=params.msg,size=100;
-
-        params=params.toLowerCase();
-        if(params.indexOf("font")>=-1){
-            //var st=params.slice(params.indexOf("font"),params.indexOf("font")+)
-         //   font=params.font;
-            
-
-        }
-    //  font = params.font;
-      ctx.font=font;
-      var zz= ctx.measureText(msg);
-      var hh=zz.actualBoundingBoxAscent
-        var width = zz.width; 
-        size=width; 
-        c.width=size*1.1;
-        ctx = c.getContext("2d");
-      if(params.indexOf("background")>=-1){
-            ctx.fillStyle = params.background;
-            ctx.fillRect(0, 0, c.width, c.height)
-        }
-        if(params.indexOf("color")>=-1) color=params.color;
-        if(params.indexOf("frame")>=-1){
-            ctx.fillStyle = color;
-            ctx.strokeStyle = ctx.fillStyle;
-            ctx.lineWidth = 3;
-            ctx.strokeRect(0, 0, c.width, c.height);
-        }
-        if(params.indexOf(" border ")>=-1);
-
-        var z=this.getTextDimentions(msg+" ",params.font);
-        ctx = c.getContext("2d");
-        ctx.font = font;
-        var x = c.width / 2;
-        ctx.textAlign = "center";
-        ctx.fillStyle = color;
-        ctx.fillText(msg, x, c.height/2+hh/2); 
-        texture = new THREE.ImageUtils.loadTexture(c.toDataURL())
-          const material = new THREE.SpriteMaterial({
-            map: texture,
-            color: 0xffffff
-        });
-
-    const sprite = new THREE.Sprite(material);
-
-        if (params.indexOf("scale(")>=-1) {
-         //   sprite.scale.set(params.scale.x, params.scale.y, params.scale.z);
-        }
-  
-    return sprite;
-     }
-    else alert("not a Mesage")
-}
-
 
 
 
