@@ -1142,6 +1142,15 @@ this.tag = function(params){
 
         var z=this.getTextDimentions(msg+" ",params.font);
         ctx = c.getContext("2d");
+        var m=4;
+        ///////////////////////////
+      if(params.border){  ctx.fillStyle = "white";//color;
+        ctx.strokeStyle = ctx.fillStyle;
+        ctx.lineWidth = 1;
+        ctx.strokeRect(c.width / 2-width/2-m, c.height/2-hh/2-m, width+m*2, hh+m*2);
+     }
+ 
+//////////////////////////////////
         ctx.font = font;
         var x = c.width / 2;
         ctx.textAlign = "center";
@@ -1165,7 +1174,6 @@ this.tag = function(params){
      }
     else alert("not a Mesage")
 }
-
 
 
 
