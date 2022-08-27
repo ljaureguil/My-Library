@@ -1144,7 +1144,8 @@ this.tag = function(params){
         ctx = c.getContext("2d");
         var m=4;
         ///////////////////////////
-      if(params.border){  ctx.fillStyle = "white";//color;
+       if(params.border!=undefined){
+       ctx.fillStyle = params.border;
         ctx.strokeStyle = ctx.fillStyle;
         ctx.lineWidth = 1;
         ctx.strokeRect(c.width / 2-width/2-m, c.height/2-hh/2-m, width+m*2, hh+m*2);
