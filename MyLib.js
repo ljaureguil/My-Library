@@ -1203,7 +1203,10 @@ c.width=t+c.width*.12;c.height+=c.height*.12;
  ctx.fillStyle = "white";//color;
  ctx.strokeStyle = ctx.fillStyle;
  ctx.lineWidth = 1;
- ctx.strokeRect(c.width / 2-t/2-m, c.height/2-h/2-m, t+m*2, h+m*2);
+// ctx.strokeRect(c.width / 2-t/2-m, c.height/2-h/2-m, t+m*2, h+m*2);
+ //ctx.strokeRect(c.width / 2-t/2-m, c.height/2-h/2-m, t+m*2, h+m*2);
+ ctx.strokeRect(c.width / 2-t/2-m, c.height/2-h/2-m, c.width / 2+t/2+m,  c.height/2+h/2+m);
+ 
  for(var i=0;i<arl.length;i++){
     ctx.font = font;
     var x = c.width / 2;
