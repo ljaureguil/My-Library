@@ -1176,7 +1176,51 @@ this.tag = function(params){
     else alert("not a Mesage")
 }
 
+this.tag2=function(params){//tx,font
+    var tx=params.msg;
+    var font=params.font;
+    var color=params.color;
 
+    if(color===undefined)color="white"
+  
+    var c = document.createElement("canvas"); //alert(renderer.getPixelRatio ()) \
+    var ctx = c.getContext("2d"); var m=4;
+    if(font===undefined){font = '150px serif'}
+    //,color="white",msg=params.msg,size=100;
+  ctx.font=font;
+  var arl=tx.split("\n");
+   var z= ctx.measureText(tx);
+   var hh=z.actualBoundingBoxAscent
+     var h=hh*arl.length;
+var t=0;
+for(var i=0;i<arl.length;i++){
+    var zz= ctx.measureText(arl[i]);
+if(t<zz.width)t=zz.width;
+ }
+// c.width+=c.width*.12;c.height+=c.height*.12;
+// c.width+=m*5;c.height+=m*5;
+c.width=t+c.width*.12;c.height+=c.height*.12;
+ ctx.fillStyle = "white";//color;
+ ctx.strokeStyle = ctx.fillStyle;
+ ctx.lineWidth = 1;
+ ctx.strokeRect(c.width / 2-t/2-m, c.height/2-h/2-m, t+m*2, h+m*2);
+ for(var i=0;i<arl.length;i++){
+    ctx.font = font;
+    var x = c.width / 2;
+    ctx.textAlign = "center";
+    ctx.fillStyle = color;
+    ctx.fillText(arl[i], x,  c.height/2+(hh+m)*i);// c.height/2-h+(hh*i)); //
+ }
+
+ texture = new THREE.ImageUtils.loadTexture(c.toDataURL())
+ 
+ const material = new THREE.SpriteMaterial({map: texture,color: 0xffffff});
+const sprite = new THREE.Sprite(material);
+return sprite;
+
+//return c;
+
+}
 
     this.textLebel = function(msg, W, H, center, color, toCamera, font, frame) {
         if (typeof msg === "string" || typeof msg === "number") {
