@@ -948,7 +948,21 @@ function LJL() {
    //  this.tmetal="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuTTB-NXkpu7X_SV42LBbdS5npnlL94PiVEJjEdUsYChvvfc34jIoMTmKHnJFRw7kcEGk&usqp=CAU"
 
     this.arlebs = [];
-
+  this.arrayToV2 = function(ar){
+        var arv=[];
+        for(var i=0;i<ar.length;i++){
+        arv.push({x:ar[i][0],y:ar[i][1],id:ar[i][2],name:ar[i][3]});
+        }
+        return arv;
+        }
+        this.arrayToV3 = function(ar){
+        var arv=[];
+        for(var i=0;i<ar.length;i++){
+        
+        arv.push({x:ar[i][0],y:ar[i][1],z:ar[i][2],id:ar[i][3],name:ar[i][4]});
+        }
+        return arv;
+        }
 
     this.material = function(texture, color) {
          var mat = new THREE.MeshPhongMaterial();
