@@ -637,19 +637,10 @@ this.gShape=function (points,h){
     return new THREE.ExtrudeGeometry( shape, extrudeSettings );
    
 }
-    this.Shape=function (points,h,texture,color){
-        
-        var g= this.gShape(points,h)
-        var m=new THREE.Mesh();
-        m.geometry=g;
-        m.material=new THREE.MeshPhongMaterial();
-       // m.material.map=new THREE.ImageUtils.loadTexture( texture ); alert(shape);
-        if(color!=undefined) m.material.color=color;
-        else m.material.color=0xffffff;
-
-        return m;
+   this.Shape=function (points,h,texture,color){
+            if(texture!="") return new THREE.Mesh(this.gShape(points,h),new THREE.MeshPhongMaterial({opacity:.5,color:color,map:new THREE.ImageUtils.loadTexture( texture )}));
+        return new THREE.Mesh(this.gShape(points,h),new THREE.MeshPhongMaterial({opacity:.5,color:color}));
         }  
-
 
     this.gflat = function(w, l, tk, center, buffer) {
         return gbox(l, tk, w, center, buffer);
