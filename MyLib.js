@@ -937,7 +937,21 @@ function line(points, width, color) {
 function LJL() {
    this.tmetal="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT413jDECPcWpExKfDvY4QqegtPfXIYelonQEJspu8ZNyvi1_--74DdoMmGUOPw6DOcRes&usqp=CAU"
    //  this.tmetal="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuTTB-NXkpu7X_SV42LBbdS5npnlL94PiVEJjEdUsYChvvfc34jIoMTmKHnJFRw7kcEGk&usqp=CAU"
-
+this.downloadTxt= function(filename, text){
+   
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+    
+        element.style.display = 'none';
+        document.body.appendChild(element);
+    
+        element.click();
+    
+        document.body.removeChild(element);
+   
+}
+ 
     this.arlebs = [];
   this.arrayToV2 = function(ar){
         var arv=[];
