@@ -1178,6 +1178,59 @@ return sprite;
 
 }
 
+ 
+this.tagTexture=function(params){
+    var tx=params.msg;
+    var arl=tx.split("\n");
+    var font=params.font;
+    var color=params.color;
+var m=4;
+    if(color===undefined)color="white"
+    var c = document.createElement("canvas"); //alert(renderer.getPixelRatio ()) \
+    var ctx = c.getContext("2d"); 
+    if(font===undefined){font = '150px serif'}
+      ctx.font=font;
+    var z= ctx.measureText(tx);
+   var hh=z.actualBoundingBoxAscent+2*m
+     var h=hh*arl.length;
+var t=0;
+for(var i=0;i<arl.length;i++){
+    var zz= ctx.measureText(arl[i]);
+if(t<zz.width)t=zz.width;
+ }
+c.width=t+c.width*.12;c.height+=h+c.height*.12;//c.height+=c.height*.12;
+var bk="rgba(0,0,0,0)"
+if(params.background!=undefined){ 
+    bk=params.background;
+        ctx.fillStyle = bk;
+     ctx.fillRect(c.width / 2-t/2-m,c.height/2-h/2,t+m*2,h+m*3);
+     ctx.fillStyle = "white";//color;
+     ctx.strokeStyle = ctx.fillStyle;
+     ctx.lineWidth = 2;
+     ctx.strokeRect(c.width / 2-t/2-m,c.height/2-h/2,t+m*2,h+m*3);
+}
+if(params.border!=undefined){
+ ctx.fillStyle = params.border;//"white";//color;
+ ctx.strokeStyle = ctx.fillStyle;
+ ctx.lineWidth = 2;
+  ctx.strokeRect(c.width / 2-t/2-m,c.height/2-h/2,t+m*2,h+m*3);
+}
+ for(var i=0;i<arl.length;i++){
+    ctx.font = font;
+    var x = c.width / 2;
+    ctx.textAlign = "center";
+    ctx.fillStyle = color;
+     ctx.fillText(arl[i], x,  c.height/2-h/2+(hh+hh*i)); 
+  }
+
+ texture = new THREE.ImageUtils.loadTexture(c.toDataURL())
+ 
+ return texture;
+
+}
+ 
+ 
+ 
     this.textLebel = function(msg, W, H, center, color, toCamera, font, frame) {
         if (typeof msg === "string" || typeof msg === "number") {
 
