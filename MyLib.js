@@ -1222,8 +1222,13 @@ if(params.border!=undefined){
     ctx.fillStyle = color;
      ctx.fillText(arl[i], x,  c.height/2-h/2+(hh+hh*i)); 
   }
-
+var rpx=1, rpy=1;
+if(params.repeatX!=undefined) rpx=params.repeatX;
+if(params.repeatY!=undefined) rpy=params.repeatY;
  texture = new THREE.ImageUtils.loadTexture(c.toDataURL())
+
+ texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+ texture.repeat.set(rpx,rpy);
  
  return texture;
 
