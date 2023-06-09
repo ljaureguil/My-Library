@@ -1234,7 +1234,51 @@ if(params.repeatY!=undefined) rpy=params.repeatY;
 
 }
  
- 
+this.TextOnCanvas = function (Canvas, text, font, color, bkgcolor, marginTop, maxWidth, lineHeight, canvasops){
+var canvas;
+if(Canvas===null){
+ canvas=document.createElement("canvas");
+if(canvasops!=undefined){
+canvas.width=canvasops.width;
+canvas.height=canvasops.height;
+if(canvas.style.background!=undefined) canvas.style.background=canvasops.background;
+}
+else{
+canvas.width=maxWidth-10;
+canvas.height=lineHeight*10;
+}
+}
+else canvas=Canvas;
+canvas.style.background=bkgcolor;
+var x=(canvas.width - maxWidth) / 2, y=marginTop;
+context=canvas.getContext('2d');
+context.font = font;//'15pt script';//'15pt Calibri';
+context.fillStyle = color;// '#333';
+    var paragraphs = text.split('\n');
+     for (var i = 0; i < paragraphs.length; i++) { 
+  var line = '';
+        var words = paragraphs[i].split(' ');
+        for (var n = 0; n < words.length; n++) { // alert(words[n])
+          
+            var testLine = line + words[n] + ' ';
+            var metrics = context.measureText(testLine);
+            var testWidth = metrics.width;
+            if (words[n].indexOf('\n') > -1 || testWidth > maxWidth && n > 0) {
+                context.fillText(line, x, y);
+                line = words[n] + ' ';
+                y += lineHeight;
+            } else {
+                line = testLine;
+            }
+        }
+        context.fillText(line, x, y); y += lineHeight;
+    }
+if(Canvas==null){ return canvas;}
+
+
+
+}
+
  
     this.textLebel = function(msg, W, H, center, color, toCamera, font, frame) {
         if (typeof msg === "string" || typeof msg === "number") {
