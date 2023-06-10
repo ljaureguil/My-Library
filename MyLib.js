@@ -1285,7 +1285,8 @@ if(Canvas==null){ return canvas;}
     canvas.height = canvas.width * r;
     canvas.style.background = bkgcolor;
     var x = marginWidth,
-        y = marginTop;
+        y = marginTop,maxWidth=canvas.width-2*marginWidth;
+   
     context = canvas.getContext('2d');
     context.font = font;
     context.fillStyle = color;
