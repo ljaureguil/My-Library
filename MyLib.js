@@ -1275,6 +1275,56 @@ context.fillStyle = color;// '#333';
     }
 if(Canvas==null){ return canvas;}
 
+}
+ 
+  this.TextOnCanvasDoc = function(text, font, color, bkgcolor, marginTop, marginWidth, lineHeight, canvasops) {
+    var r = 11 / 8.5;
+    var pages = [];
+    var canvas = document.createElement("canvas");
+    canvas.width = 600;
+    canvas.height = canvas.width * r;
+    canvas.style.background = bkgcolor;
+    var x = marginWidth,
+        y = marginTop;
+    context = canvas.getContext('2d');
+    context.font = font;
+    context.fillStyle = color;
+    pages.push(canvas);
+    var paragraphs = text.split('\n');
+    for (var i = 0; i < paragraphs.length; i++) {
+        var line = '';
+        var words = paragraphs[i].split(' ');
+        for (var n = 0; n < words.length; n++) {
+            if (y + lineHeight > canvas.height) {
+
+                canvas = document.createElement("canvas");
+                canvas.width = 600;
+                canvas.height = canvas.width * r;
+
+                canvas.style.background = bkgcolor;
+                var x = marginWidth,
+                    y = marginTop;
+                context = canvas.getContext('2d');
+                context.font = font;
+                context.fillStyle = color;
+                pages.push(canvas);
+
+            }
+            var testLine = line + words[n] + ' ';
+            var metrics = context.measureText(testLine);
+            var testWidth = metrics.width;
+            if (words[n].indexOf('\n') > -1 || testWidth > maxWidth && n > 0) {
+                context.fillText(line, x, y);
+                line = words[n] + ' ';
+                y += lineHeight;
+            } else {
+                line = testLine;
+            }
+        }
+        context.fillText(line, x, y);
+        y += lineHeight;
+    }
+    return pages;
 
 
 }
