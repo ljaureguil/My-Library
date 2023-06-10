@@ -1329,6 +1329,40 @@ if(Canvas==null){ return canvas;}
 
 
 }
+ 
+ this.Materials = {
+    refractiveM: function() {
+        var Mat = new THREE.MeshPhongMaterial();
+        Mat.envMap = Materials.refractiveTexture();
+        return Mat;
+    },
+    reflectiveM: function()
+    {
+        var Mat = new THREE.MeshPhongMaterial();
+        Mat.envMap = Materials.reflectiveTexture();
+        return Mat;
+    },
+    reflectiveTexture: function() {
+        var rtTexture = new THREE.WebGLRenderTargetCube(256, 256, {
+            minFilter: THREE.LinearFilter,
+            magFilter: THREE.NearestFilter,
+            format: THREE.RGBFormat
+        });
+        rtTexture.fromEquirectangularTexture(renderer, scene.textura);
+        rtTexture.mapping = THREE.CubeReflectionMapping;
+        return rtTexture;
+    },
+    refractiveTexture: function() {
+        var rtTexture = new THREE.WebGLRenderTargetCube(256, 256, {
+            minFilter: THREE.LinearFilter,
+            magFilter: THREE.NearestFilter,
+            format: THREE.RGBFormat
+        });
+        rtTexture.fromEquirectangularTexture(renderer, scene.textura);
+        rtTexture.mapping = THREE.CubeRefractionMapping;
+        return rtTexture;
+    }
+}
 
  
     this.textLebel = function(msg, W, H, center, color, toCamera, font, frame) {
