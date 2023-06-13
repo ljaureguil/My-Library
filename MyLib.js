@@ -1286,8 +1286,10 @@ if(Canvas==null){ return canvas;}
     canvas.style.background = bkgcolor;
     var x = marginWidth,
         y = marginTop,maxWidth=canvas.width-2*marginWidth;
-   
+ 
     context = canvas.getContext('2d');
+    context.fillStyle = bkgcolor;
+    context.fillRect(0, 0, canvas.width, canvas.height);
     context.font = font;
     context.fillStyle = color;
     pages.push(canvas);
@@ -1306,6 +1308,8 @@ if(Canvas==null){ return canvas;}
                 var x = marginWidth,
                     y = marginTop;
                 context = canvas.getContext('2d');
+                context.fillStyle = bkgcolor;
+                context.fillRect(0, 0, canvas.width, canvas.height);
                 context.font = font;
                 context.fillStyle = color;
                 pages.push(canvas);
@@ -1327,6 +1331,8 @@ if(Canvas==null){ return canvas;}
     }
     return pages;
 
+
+}
 
 }
  
