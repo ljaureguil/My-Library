@@ -1334,7 +1334,6 @@ if(Canvas==null){ return canvas;}
 
 }
 
-}
  
  this.getMaterials=function(){
      Materials = {
