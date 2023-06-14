@@ -1280,10 +1280,16 @@ if(Canvas==null){ return canvas;}
   this.TextOnCanvasDoc = function(text, font, color, bkgcolor, marginTop, marginWidth, lineHeight, canvasops) {
     var r = 11 / 8.5;
     var pages = [];
+ 
+
     var canvas = document.createElement("canvas");
-    canvas.width = 600;
-    canvas.height = canvas.width * r;
-    canvas.style.background = bkgcolor;
+      canvas.width = 600;
+       canvas.height = canvas.width * r;
+     if(canvasops!=undefined){
+   if(canvasops.width!=undefined) canvas.width=canvasops.width;
+    if(canvasops.height!=undefined) canvas.height=canvasops.height;
+       }
+      canvas.style.background = bkgcolor;
     var x = marginWidth,
         y = marginTop,maxWidth=canvas.width-2*marginWidth;
  
@@ -1300,19 +1306,19 @@ if(Canvas==null){ return canvas;}
         for (var n = 0; n < words.length; n++) {
             if (y + lineHeight > canvas.height) {
 
-                canvas = document.createElement("canvas");
-                canvas.width = 600;
-                canvas.height = canvas.width * r;
+                canvasnx = document.createElement("canvas");
+                canvasnx.width = canvas.width;
+                canvasnx.height = canvas.height;
 
-                canvas.style.background = bkgcolor;
+                canvasnx.style.background = bkgcolor;
                 var x = marginWidth,
                     y = marginTop;
-                context = canvas.getContext('2d');
+                context = canvasnx.getContext('2d');
                 context.fillStyle = bkgcolor;
-                context.fillRect(0, 0, canvas.width, canvas.height);
+                context.fillRect(0, 0, canvasnx.width, canvasnx.height);
                 context.font = font;
                 context.fillStyle = color;
-                pages.push(canvas);
+                pages.push(canvasnx);
 
             }
             var testLine = line + words[n] + ' ';
@@ -1333,7 +1339,6 @@ if(Canvas==null){ return canvas;}
 
 
 }
-
  
  this.getMaterials=function(){
      Materials = {
