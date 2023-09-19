@@ -1636,3 +1636,104 @@ return Materials;
         }  
     return this;
 }
+
+
+
+Mat={
+    pii: Math.PI,
+    toRad(a) {
+        return a * Math.PI / 180
+    },
+    toDeg(a) {
+        return 180 * a / Math.PI
+    },
+    getObsG(p1, p2) {
+        var dx = p2.x - p1.x,
+            dy = p2.y - p1.y,
+            dz = p2.z - p1.z;
+
+
+        var d = Math.sqrt(dx * dx + dy * dy + dz * dz);
+        var v = Math.asin(dy / d); //arcsin (dz / d);
+        var az = Math.atan(dx / dz); //arctan((x2 –x1)/(y2 –y1));
+        var c = 1;
+        if (dx >= 0 && dz >= 0) c = 1;
+        if (dx >= 0 && dz <= 0) c = 2;
+        if (dx <= 0 && dz <= 0) c = 3;
+        if (dx <= 0 && dz >= 0) c = 4
+
+        return {
+            az: this.radToAz(az, c),
+            v: v,
+            d: d,
+            dx: Math.cos(dy / d)
+        }
+    },
+    getObs(p1, p2) {
+        var dx = p2.x - p1.x,
+            dy = p2.y - p1.y,
+            dz = p2.z - p1.z;
+
+
+        var d = Math.sqrt(dx * dx + dy * dy + dz * dz);
+        var v = Math.asin(dz / d); //arcsin (dz / d);
+        var az = Math.atan(dx / dy); //arctan((x2 –x1)/(y2 –y1));
+        var c = 1;
+        if (dx >= 0 && dy >= 0) c = 1;
+        if (dx >= 0 && dy <= 0) c = 2;
+        if (dx <= 0 && dy <= 0) c = 3;
+        if (dx <= 0 && dy >= 0) c = 4
+
+        return {
+            az: this.radToAz(az, c),
+            v: v,
+            d: d,
+            dx: Math.cos(dy / d)
+        }
+    },
+
+    radToAz(a, c) {
+
+        var an = this.toDeg(a);
+        if (an < 0) an = an * -1;
+        if (c == 1) an = an;
+        if (c == 2) an = 180 - an;
+        if (c == 3) an = 180 + an;
+        if (c == 4) an = 360 - an;
+        return an;
+
+    },
+    degToAz(an, c) {
+        if (an < 0) an = an * -1;
+        if (c == 1) an = an;
+        if (c == 2) an = 180 - an;
+        if (c == 3) an = 180 + an;
+        if (c == 4) an = 360 - an;
+        return an;
+
+    },
+
+//This function takes in latitude and longitude of two location and returns the distance between them as the crow flies (in km)
+    calcCrow(lat1, lon1, lat2, lon2) 
+    {
+      var R = 6371; // km
+      var dLat = this.toRad(lat2-lat1);
+      var dLon = this.toRad(lon2-lon1);
+      var lat1 = this.toRad(lat1);
+      var lat2 = this.toRad(lat2);
+
+      var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
+      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+      var d = R * c;
+      return d;
+    }
+
+   
+
+
+
+}
+
+
+
