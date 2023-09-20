@@ -1634,12 +1634,7 @@ return Materials;
             app.ShowPopup("File Saved At: "+folder+filename);
             })     
         }  
-    return this;
-}
-
-
-
-var Mat={
+this.Mat={
     pii: Math.PI,
     toRad(a) {
         return a * Math.PI / 180
@@ -1728,12 +1723,15 @@ var Mat={
       var d = R * c;
       return d;
     }
-
-   
-
-
-
 }
+
+
+
+ 
+    return this;
+}
+
+
 
 
 
