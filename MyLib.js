@@ -1635,7 +1635,7 @@ return Materials;
             })     
         }  
 this.Mat={
-    pii: Math.PI,
+   // pii: Math.PI,
     toRad(a) {
         return a * Math.PI / 180
     },
@@ -1661,7 +1661,8 @@ this.Mat={
             az: this.radToAz(az, c),
             v: v,
             d: d,
-            dx: Math.cos(dy / d)
+            dx: Math.cos(dy / d),
+            dy: dy
         }
     },
     getObs(p1, p2) {
@@ -1683,7 +1684,8 @@ this.Mat={
             az: this.radToAz(az, c),
             v: v,
             d: d,
-            dx: Math.cos(dy / d)
+            dx: Math.cos(dy / d),
+            dz: dz
         }
     },
 
@@ -1730,6 +1732,7 @@ this.Mat={
  
     return this;
 }
+
 
 
 
