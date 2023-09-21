@@ -1652,14 +1652,14 @@ this.Mat={
         var v = Math.asin(dy / d); //arcsin (dz / d);
         var az = Math.atan(dx / dz); //arctan((x2 –x1)/(y2 –y1));
         var c = 1;
-        if (dx >= 0 && dz >= 0) c = 1;
-        if (dx >= 0 && dz <= 0) c = 2;
-        if (dx <= 0 && dz <= 0) c = 3;
-        if (dx <= 0 && dz >= 0) c = 4
+        if (dx >= 0 && dz >= 0) c = 2;
+        if (dx >= 0 && dz <= 0) c = 1;
+        if (dx <= 0 && dz <= 0) c = 4;
+        if (dx <= 0 && dz >= 0) c = 3
 
         return {
             az: this.radToAz(az, c),
-            v: v,
+            v: this.toDeg(v),
             d: d,
             dx: Math.cos(dy / d),
             dy: dy
@@ -1682,7 +1682,7 @@ this.Mat={
 
         return {
             az: this.radToAz(az, c),
-            v: v,
+            v: this.toDeg(v),
             d: d,
             dx: Math.cos(dy / d),
             dz: dz
@@ -1724,11 +1724,26 @@ this.Mat={
       var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
       var d = R * c;
       return d;
-    }
+    },
+getPosG(p,a,v,d){
+ var pos={};
+a=90-a;
+v=this.toRad(v)
+var dx=Math.cos(v)*d;
+a=this.toRad(a);
+
+pos.x=dx*Math.cos(a)+p.x;
+pos.y=d*Math.sin(v)+p.y;
+pos.z=dx*Math.sin(a)+p.z;
+return pos;
+
+},
+fsObj(ob){
+ var s=JSON.stringify(ob).replace(/"/g," ").replace(/:/g,": ").replace(/,/g,"\n").replace(/{/g,"\n").replace(/}/g,"\n");
+    return s;
 }
 
-
-
+}
  
     return this;
 }
