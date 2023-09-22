@@ -1741,8 +1741,17 @@ return pos;
 fsObj(ob){
  var s=JSON.stringify(ob).replace(/"/g," ").replace(/:/g,": ").replace(/,/g,"\n").replace(/{/g,"\n").replace(/}/g,"\n");
     return s;
-}
-
+},
+ interByDis(a,b,c){
+ var x1=(a*a+c*c-b*b)/(2*c)
+ var x2=c-x1;
+ var ra=Math.acos(x1/a), A=this.toDeg(ra);
+ var rc=Math.acos(x2/b), C=this.toDeg(rc);
+ var rb=2*Math.PI-ra-rc;
+ var B=180-A-C;
+ return {A:A,B:B,C:C,ra:ra,rb:rb,rc:rc}
+ }
+ 
 }
  
     return this;
