@@ -1635,63 +1635,62 @@ return Materials;
             })     
         }  
 this.Mat={
-   // pii: Math.PI,
-    toRad(a) {
-        return a * Math.PI / 180
-    },
-    toDeg(a) {
-        return 180 * a / Math.PI
-    },
-    getObsG(p1, p2) {
-        var dx = p2.x - p1.x,
-            dy = p2.y - p1.y,
-            dz = p2.z - p1.z;
-
-
-        var d = Math.sqrt(dx * dx + dy * dy + dz * dz);
-        var v = Math.asin(dy / d); //arcsin (dz / d);
-        var az = Math.atan(dx / dz); //arctan((x2 –x1)/(y2 –y1));
-        var c = 1;
-        if (dx >= 0 && dz >= 0) c = 2;
-        if (dx >= 0 && dz <= 0) c = 1;
-        if (dx <= 0 && dz <= 0) c = 4;
-        if (dx <= 0 && dz >= 0) c = 3
-
-        return {
-            az: this.radToAz(az, c),
-            v: this.toDeg(v),
-            d: d,
-            dx: Math.cos(dy / d),
-            dy: dy
-        }
-    },
-    getObs(p1, p2) {
-        var dx = p2.x - p1.x,
-            dy = p2.y - p1.y,
-            dz = p2.z - p1.z;
-
-
-        var d = Math.sqrt(dx * dx + dy * dy + dz * dz);
-        var v = Math.asin(dz / d); //arcsin (dz / d);
-        var az = Math.atan(dx / dy); //arctan((x2 –x1)/(y2 –y1));
-        var c = 1;
-        if (dx >= 0 && dy >= 0) c = 1;
-        if (dx >= 0 && dy <= 0) c = 2;
-        if (dx <= 0 && dy <= 0) c = 3;
-        if (dx <= 0 && dy >= 0) c = 4
-
-        return {
-            az: this.radToAz(az, c),
-            v: this.toDeg(v),
-            d: d,
-            dx: Math.cos(dy / d),
-            dz: dz
-        }
-    },
-
-    radToAz(a, c) {
-
-        var an = this.toDeg(a);
+    // pii: Math.PI,
+     toRad(a) {
+         return a * Math.PI / 180
+     },
+     toDeg(a) {
+         return 180 * a / Math.PI
+     },
+     getObsG(p1, p2) {
+         var dx = p2.x - p1.x,
+             dy = p2.y - p1.y,
+             dz = p2.z - p1.z;
+ 
+ 
+         var d = Math.sqrt(dx * dx + dy * dy + dz * dz);
+         var v = Math.asin(dy / d); //arcsin (dz / d);
+         var az = Math.atan(dx / dz); //arctan((x2 –x1)/(y2 –y1));
+         var c = 1;
+         if (dx >= 0 && dz >= 0) c = 2;
+         if (dx >= 0 && dz <= 0) c = 1;
+         if (dx <= 0 && dz <= 0) c = 4;
+         if (dx <= 0 && dz >= 0) c = 3
+ 
+         return {
+             az: this.radToAz(az, c),
+             v: this.toDeg(v),
+             d: d,
+             dx: Math.cos(dy / d),
+             dy: dy
+         }
+     },
+     getObs(p1, p2) {
+         var dx = p2.x - p1.x,
+             dy = p2.y - p1.y,
+             dz = p2.z - p1.z;
+ 
+ 
+         var d = Math.sqrt(dx * dx + dy * dy + dz * dz);
+         var v = Math.asin(dz / d); //arcsin (dz / d);
+         var az = Math.atan(dx / dy); //arctan((x2 –x1)/(y2 –y1));
+         var c = 1;
+         if (dx >= 0 && dy >= 0) c = 1;
+         if (dx >= 0 && dy <= 0) c = 2;
+         if (dx <= 0 && dy <= 0) c = 3;
+         if (dx <= 0 && dy >= 0) c = 4
+ 
+         return {
+            Az: this.toDeg( this.getAzRadians(az, c)),
+            V: this.toDeg(v),           
+             az: this.getAzRadians(az, c),
+             v: v,
+             d: d,
+             dx: Math.cos(dy / d),
+             dz: dz
+         }
+     },
+     getAzDeg(an, c) {
         if (an < 0) an = an * -1;
         if (c == 1) an = an;
         if (c == 2) an = 180 - an;
@@ -1699,49 +1698,70 @@ this.Mat={
         if (c == 4) an = 360 - an;
         return an;
 
-    },
-    degToAz(an, c) {
-        if (an < 0) an = an * -1;
-        if (c == 1) an = an;
-        if (c == 2) an = 180 - an;
-        if (c == 3) an = 180 + an;
-        if (c == 4) an = 360 - an;
-        return an;
-
-    },
-
-//This function takes in latitude and longitude of two location and returns the distance between them as the crow flies (in km)
-    calcCrow(lat1, lon1, lat2, lon2) 
-    {
-      var R = 6371; // km
-      var dLat = this.toRad(lat2-lat1);
-      var dLon = this.toRad(lon2-lon1);
-      var lat1 = this.toRad(lat1);
-      var lat2 = this.toRad(lat2);
-
-      var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-        Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
-      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-      var d = R * c;
-      return d;
-    },
-getPosG(p,a,v,d){
- var pos={};
-a=90-a;
-v=this.toRad(v)
-var dx=Math.cos(v)*d;
-a=this.toRad(a);
-
-pos.x=dx*Math.cos(a)+p.x;
-pos.y=d*Math.sin(v)+p.y;
-pos.z=dx*Math.sin(a)+p.z;
-return pos;
-
-},
-fsObj(ob){
- var s=JSON.stringify(ob).replace(/"/g," ").replace(/:/g,": ").replace(/,/g,"\n").replace(/{/g,"\n").replace(/}/g,"\n");
-    return s;
-},
+    }, 
+     getAzRadians(a,c){
+        var an = a;
+         if (an < 0) an = an * -1;
+         if (c == 1) an = an;
+         if (c == 2) an = Math.PI - an;
+         if (c == 3) an = Math.PI + an;
+         if (c == 4) an = 2*Math.PI - an;
+         return an;
+     },
+ 
+     radToAz(a, c) {
+ 
+         var an = this.toDeg(a);
+         if (an < 0) an = an * -1;
+         if (c == 1) an = an;
+         if (c == 2) an = 180 - an;
+         if (c == 3) an = 180 + an;
+         if (c == 4) an = 360 - an;
+         return an;
+ 
+     },
+     degToAz(an, c) {
+         if (an < 0) an = an * -1;
+         if (c == 1) an = an;
+         if (c == 2) an = 180 - an;
+         if (c == 3) an = 180 + an;
+         if (c == 4) an = 360 - an;
+         return an;
+ 
+     },
+ 
+ //This function takes in latitude and longitude of two location and returns the distance between them as the crow flies (in km)
+     calcCrow(lat1, lon1, lat2, lon2) 
+     {
+       var R = 6371; // km
+       var dLat = this.toRad(lat2-lat1);
+       var dLon = this.toRad(lon2-lon1);
+       var lat1 = this.toRad(lat1);
+       var lat2 = this.toRad(lat2);
+ 
+       var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+         Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
+       var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+       var d = R * c;
+       return d;
+     },
+ getPosG(p,a,v,d){
+  var pos={};
+ a=90-a;
+ v=this.toRad(v)
+ var dx=Math.cos(v)*d;
+ a=this.toRad(a);
+ 
+ pos.x=dx*Math.cos(a)+p.x;
+ pos.y=d*Math.sin(v)+p.y;
+ pos.z=dx*Math.sin(a)+p.z;
+ return pos;
+ 
+ },
+ repObj(ob){
+  var s=JSON.stringify(ob).replace(/"/g," ").replace(/:/g,": ").replace(/,/g,"\n").replace(/{/g,"\n").replace(/}/g,"\n");
+     return s;
+ },
  interByDis(a,b,c){
  var x1=(a*a+c*c-b*b)/(2*c)
  var x2=c-x1;
@@ -1749,10 +1769,10 @@ fsObj(ob){
  var rc=Math.acos(x2/b), C=this.toDeg(rc);
  var rb=2*Math.PI-ra-rc;
  var B=180-A-C;
- return {A:A,B:B,C:C,ra:ra,rb:rb,rc:rc}
+ return {A:A,B:B,C:C,a:ra,b:rb,c:rc}
  }
  
-}
+ }
  
     return this;
 }
