@@ -1646,39 +1646,52 @@ this.Mat={
          var dx = p2.x - p1.x,
              dy = p2.y - p1.y,
              dz = p2.z - p1.z;
+             if(dx===0) dx=.000000000000001;
+        //     alert(dx)
  
  
          var d = Math.sqrt(dx * dx + dy * dy + dz * dz);
-         var v = Math.asin(dy / d); //arcsin (dz / d);
-         var az = Math.atan(dx / dz); //arctan((x2 –x1)/(y2 –y1));
+         var v = Math.PI/2-Math.asin(dy / d); //arcsin (dz / d);
+         var az = Math.atan(dz / dx); //arctan((x2 –x1)/(y2 –y1));
+         
          var c = 1;
+      
          if (dx >= 0 && dz >= 0) c = 2;
          if (dx >= 0 && dz <= 0) c = 1;
          if (dx <= 0 && dz <= 0) c = 4;
-         if (dx <= 0 && dz >= 0) c = 3
+         if (dx <= 0 && dz >= 0) c = 3;
+    //         alert("dx "+dx+"\ndz "+dz+"\nc "+c)  
+         var Az=this.radToAz(az, c);
+      
+    //     alert("flib\n\n"+Az)
  
          return {
-             az: this.radToAz(az, c),
-             v: this.toDeg(v),
+             A:Az,
+             V:this.toDeg(v),
+             D:d,
+             az: this.toRad(Az),
+             v: v,
              d: d,
              dx: Math.cos(dy / d),
              dy: dy
          }
      },
-     getObs(p1, p2) {
+     getObs(p1, p2,Gr) {
          var dx = p2.x - p1.x,
              dy = p2.y - p1.y,
              dz = p2.z - p1.z;
+             if(dy===0)dy=.0000000000001;
  
  
          var d = Math.sqrt(dx * dx + dy * dy + dz * dz);
-         var v = Math.asin(dz / d); //arcsin (dz / d);
+         var v = Math.PI/2-Math.asin(dz / d);// alert(v)//arcsin (dz / d);
          var az = Math.atan(dx / dy); //arctan((x2 –x1)/(y2 –y1));
          var c = 1;
          if (dx >= 0 && dy >= 0) c = 1;
          if (dx >= 0 && dy <= 0) c = 2;
          if (dx <= 0 && dy <= 0) c = 3;
-         if (dx <= 0 && dy >= 0) c = 4
+         if (dx <= 0 && dy >= 0) c = 4;
+       //  alert(dy+"\nFrom MyLib:\n\n"+this.getAzRadians(az, c))
  
          return {
             Az: this.toDeg( this.getAzRadians(az, c)),
@@ -1710,13 +1723,16 @@ this.Mat={
      },
  
      radToAz(a, c) {
- 
+       
+  
          var an = this.toDeg(a);
-         if (an < 0) an = an * -1;
-         if (c == 1) an = an;
-         if (c == 2) an = 180 - an;
-         if (c == 3) an = 180 + an;
-         if (c == 4) an = 360 - an;
+      //   alert(an+"\n\n"+c)
+         if (an < 0) an = an * (-1);
+         if (c == 1) an = 90-an;
+         if (c == 2) an = 90 + an;
+         if (c == 3) an = 270 - an;
+         if (c == 4) an = 270 + an;
+         if(an===360) an=0;
          return an;
  
      },
@@ -1776,7 +1792,6 @@ this.Mat={
  
     return this;
 }
-
 
 
 
