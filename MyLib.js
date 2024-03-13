@@ -1,16 +1,7 @@
 //<script src="https://cdn.rawgit.com/ljaureguil/My-Library/7a86fc79/MyLib.js"></script>
-
-
-/*
- var script = document.createElement("script")
-    script.type = "text/javascript";
-    script.src="ThreeCSG.js";
-    document.appendChild(script);
- */
 var Obj, state = false;
-/**/v
+
 function gsubtract(fromob, ob) {
-  //  alert(fromob)
     var ob1 = fromob,
         ob2 = ob,
         geom = new THREE.Geometry();
@@ -19,16 +10,14 @@ function gsubtract(fromob, ob) {
     if (fromob.isBufferGeometry) ob1 = new THREE.Geometry().fromBufferGeometry(fromob);
     if (ob.isGeometry) ob2 = ob;
     if (ob.isBufferGeometry) ob2 = new THREE.Geometry().fromBufferGeometry(ob); 
- //   alert(ob1+ob2)
+
     var ob1_bsp = new ThreeBSP(ob1);
     var ob2_bsp = new ThreeBSP(ob2);
    
     var subtract_bsp = ob1_bsp.subtract(ob2_bsp);
     var geom = subtract_bsp.toGeometry();
     geom.computeVertexNormals();
-    // verts = geom.vertices;
-    //for (let i = 0; i < verts.length; i++){	verts[i].setX(verts[i].x * -1);}
-    //geom.verticesNeedUpdate = true;   
+
 
     return geom;
 }
