@@ -38,7 +38,7 @@
                  alpha: true
              });
              renderer.setSize(window.innerWidth, window.innerHeight);
-                  renderer.domElement.setAttribute("id","_renderCanvas");
+             //     renderer.domElement.setAttribute("id","_renderCanvas");
              document.body.appendChild(renderer.domElement);
 
              var directionalLight = new THREE.DirectionalLight(0xffffff, 1.35, 1000);
