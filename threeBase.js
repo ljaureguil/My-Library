@@ -17,8 +17,8 @@
                          insertScript(t)
 
                          setTimeout(function() {
-                             init();
-                         }, 11);
+                             _init();
+                         }, 8);
 
                      })
                  })
@@ -27,7 +27,7 @@
          });
           //src="//cdn.rawgit.com/mrdoob/three.js/master/build/three.min.js" onload="init"
 
-         function init() {
+         function _init() {
 
              camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 1000);
              camera.position.z = 100;
