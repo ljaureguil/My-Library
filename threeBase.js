@@ -1,4 +1,4 @@
-         var camera, scene, renderer, ainicio, cods = '';
+         var camera, scene, renderer, ainicio, cods_ = '';
          var geometry, material, mesh;
 
 
@@ -78,7 +78,7 @@
 
          function render() {
              controls.update();
-             eval(cods)
+             eval(cods_)
              renderer.render(scene, camera);
          }
 
