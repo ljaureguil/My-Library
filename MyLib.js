@@ -1782,10 +1782,12 @@ this.Mat={
 this.dot=function(r,color){
      return new THREE.Mesh(new THREE.SphereGeometry(r, 16, 16), new THREE.MeshPhongMaterial({color:color}));
 }
-this.circle=function(r,arc,color){
+this.circle=function(r,color,arc,def){
+    if(arc<=0 || arc=== undefined) arc=Math.PI*2;
+    if(def===undefined) def=150;   
     if(color===undefined) color="white";
 let g = new THREE.BufferGeometry().setFromPoints(
-    new THREE.Path().absarc(0, 0, r, arc,0 ).getSpacedPoints(150)
+    new THREE.Path().absarc(0, 0, r, arc,0 ).getSpacedPoints(def)
 );
 let m = new THREE.LineBasicMaterial({color: color});
 return  new THREE.Line(g, m);
