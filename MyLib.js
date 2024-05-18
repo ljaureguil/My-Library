@@ -1779,9 +1779,13 @@ this.Mat={
  
  }
  
-    return this;
+this.dot=function(r,color){
+     return new THREE.Mesh(new THREE.SphereGeometry(r, 16, 16), new THREE.MeshPhongMaterial({color:color}));
 }
 
+
+    return this;
+}
 
 
 
