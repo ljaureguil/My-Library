@@ -1782,7 +1782,7 @@ this.Mat={
 this.dot=function(r,color){
      return new THREE.Mesh(new THREE.SphereGeometry(r, 16, 16), new THREE.MeshPhongMaterial({color:color}));
 }
-function circle(r,arc,color){
+this.circle=function(r,arc,color){
     if(color===undefined) color="white";
 let g = new THREE.BufferGeometry().setFromPoints(
     new THREE.Path().absarc(0, 0, r, arc,0 ).getSpacedPoints(150)
