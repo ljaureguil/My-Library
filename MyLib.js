@@ -1782,7 +1782,7 @@ this.Mat={
 this.dot=function(r,color){
      return new THREE.Mesh(new THREE.SphereGeometry(r, 16, 16), new THREE.MeshPhongMaterial({color:color}));
 }
-this.circle=function(r,color,arc,def){
+this.circle=function(r,arc,color,def){
     if(arc<=0 || arc=== undefined) arc=Math.PI*2;
     if(def===undefined) def=150;   
     if(color===undefined) color="white";
