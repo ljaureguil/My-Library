@@ -610,6 +610,91 @@ function plane(x, y, texture, color, center) {
 /**/
 
 function structural() {
+  this.plateObj={perim:[],holes:[],settings:{extrudeSettings:"",materialSettings:""}}
+      this.splateObj='var plateObj={perim:[],holes:[],settings:{extrudeSettings:"",materialSettings=""}}'
+    this.extrudeSettings = {
+        amount: 6,
+        bevelEnabled: true,
+        bevelSegments: 2,
+        steps: 2,
+        bevelSize: .25,
+        bevelThickness: 1
+    }; 
+    this.sextrudeSettings=`var extrudeSettings={
+        amount: 6,
+        bevelEnabled: true,
+        bevelSegments: 2,
+        steps: 2,
+        bevelSize: .25,
+        bevelThickness: 1}
+        `
+
+
+    this.materialSettings=`
+    //texture must be ready
+    var matSettings={  color:0x00ffff,transparent:true,opacity:.752,  map: texture, side: THREE.DoubleSide,bumpMap:texture,bumpScale:.05,normalMap:texture,};
+    `;
+
+ 
+  
+
+    this.crShape=function (shape, obm , x, y, z, rx, ry, rz, s) {
+    //obm an object containing obm.settings.extrudeSettings and obm.settings.extrudeSettings
+    var geometry = new THREE.ExtrudeGeometry(shape, obm.settings.extrudeSettings);
+
+
+        var mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial(obm.settings.materialSettings));
+
+        mesh.position.set(x, y, z);
+        mesh.rotation.set(rx, ry, rz);
+        mesh.scale.set(s, s, s);
+return mesh;
+
+    }
+
+    this.plateWithHoles = function(plateObj){
+         var perim=plateObj.perim,holes=plateObj.holes; 
+       var v2=this.toV2(perim);
+       var ws = new THREE.Shape(v2);
+      
+       for(var i=0;i<holes.length;i++){
+       var v2=this.toV2(holes[i]);
+       var hole=new THREE.Path(v2);
+       ws.holes.push(hole);
+       }
+       
+       var ww=this.crShape(ws, plateObj, 0, 0, 0, 0, 0, 0, 1);
+        return ww;
+  
+    }
+//////////////////////////
+	this.opening=function (s) {
+  		    return [
+		        [s.x, s.y],
+		        [s.x, s.h + s.y],
+		        [s.x + s.w, s.h + s.y],
+		        [s.x + s.w, s.y],
+		        [s.x, s.y]
+		    ];
+		}
+
+		this.toV2 =function (path) {
+                       //array with arrays with x an y.
+		    var ar = []
+		    for (var i = 0; i < path.length; i++) {
+		        ar.push(new THREE.Vector2(path[i][0], path[i][1]))
+		    }
+		    return ar;
+
+		}
+	
+
+    
+
+  //////////////////////////////  
+
+
+    
     this.gGusset=function (w,h,tk){
 var shape = new THREE.Shape();
   shape.moveTo(0,0);
