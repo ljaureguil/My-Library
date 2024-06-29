@@ -610,6 +610,63 @@ function plane(x, y, texture, color, center) {
 /**/
 
 function structural() {
+/////////////////////////////////////////
+this.scircle=`
+function circle(d,s,pos){
+    this.d=d;
+    this.s=s;
+    this.pos=pos;
+    this.setPos=function(x,y){
+    for(var i=0;i<this.ar.length;i++){
+    this.ar[i][0]=this.ar0[i][0]+x;
+    this.ar[i][1]=this.ar0[i][1]+y;
+    }
+    }
+    
+    this.translate = function(x,y){
+    for(var i=0;i<this.ar.length;i++){
+    this.ar[i][0]+=x;
+    this.ar[i][1]+=y;
+    }
+    
+    }
+    
+    this.clone=function(){
+    var n=new circle(this.d,this.s,this.pos);
+    n.ar=JSON.parse(JSON.stringify(this.ar));
+    n.ar0=JSON.parse(JSON.stringify(this.ar0));;
+    return n;
+    
+    }
+    
+    
+    var r=d/2;
+    this.ar=[];
+    this.ar0=[];
+    se=Math.PI*2;var e=se/s
+    for(var i=0;i<se;i+=e){
+    var x=Math.cos(i)*r;
+    var y=Math.sin(i)*r;
+    this.ar.push([x,y]);
+    this.ar0.push([x,y]);
+    }
+    if(pos!=undefined) this.setPos(pos.x,pos.y)
+    
+    }
+            
+`;
+this.circle = function(d,s,pos){
+    if(d===undefined)d=1;
+    if(s===undefined)s=30;
+    if(pos===undefined)pos={x:0,y:0};    
+    eval(this.scircle);
+    return new circle(d,s,pos)
+}
+this.circle_ev=function(){eval(this.scircle);}
+
+//////////////////////////////////////////
+
+
   this.plateObj={perim:[],holes:[],settings:{extrudeSettings:"",materialSettings:""}}
       this.splateObj='var plateObj={perim:[],holes:[],settings:{extrudeSettings:"",materialSettings=""}}'
     this.extrudeSettings = {
