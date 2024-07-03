@@ -1093,6 +1093,8 @@ function LJL() {
     this[i][1]+=dy;
     }
     }
+
+   this.esenaBkColor = function(color){ scene.background = new THREE.Color(color);}
 this.getMethods = function(ob, varname){
     var kys = [];
 var json = JSON.stringify(ob, function(key, value) {
