@@ -627,7 +627,7 @@ Array.prototype.translateAr2 = function(ax,ay){
     }
     }
 this.scircle=`
-function circle(d,s,pos){
+function circle(d,s,arc,pos){
     this.d=d;
     this.s=s;
     this.pos=pos;
@@ -658,7 +658,13 @@ function circle(d,s,pos){
     var r=d/2;
     this.ar=[];
     this.ar0=[];
-    se=Math.PI*2;var e=se/s
+    var se=Math.PI*2;
+    if(arc!=undefined){
+        if(arc<=se)se=arc;
+         } 
+    var e=se/s
+    var end=se;
+    
     for(var i=0;i<se;i+=e){
     var x=Math.cos(i)*r;
     var y=Math.sin(i)*r;
