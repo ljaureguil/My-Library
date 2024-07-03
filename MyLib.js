@@ -611,6 +611,21 @@ function plane(x, y, texture, color, center) {
 
 function structural() {
 /////////////////////////////////////////
+Array.prototype.translateAr2 = function(ax,ay){
+    for(var i=0;i<this.length;i++){
+    this[i][0]+=ax;
+    this[i][1]+=ay;
+    
+    }
+    }
+    Array.prototype.setPosAr2 = function(x,y){
+    var dx=x-this[0][0];
+    var dy=y-this[0][1];
+    for(var i=0;i<this.length;i++){
+    this[i][0]+=dx;
+    this[i][1]+=dy;
+    }
+    }
 this.scircle=`
 function circle(d,s,pos){
     this.d=d;
@@ -668,7 +683,7 @@ this.circle_ev=function(){eval(this.scircle);}
 
 
   this.plateObj={perim:[],holes:[],settings:{extrudeSettings:"",materialSettings:""}}
-      this.splateObj='var plateObj={perim:[],holes:[],settings:{extrudeSettings:"",materialSettings=""}}'
+    this.splateObj='var plateObj={perim:[],holes:[],settings:{extrudeSettings:"",materialSettings=""}}';
     this.extrudeSettings = {
         amount: 6,
         bevelEnabled: true,
@@ -685,17 +700,12 @@ this.circle_ev=function(){eval(this.scircle);}
         bevelSize: .25,
         bevelThickness: 1}
         `
-
-
     this.materialSettings=`
     //texture must be ready
     var matSettings={  color:0x00ffff,transparent:true,opacity:.752,  map: texture, side: THREE.DoubleSide,bumpMap:texture,bumpScale:.05,normalMap:texture,};
     `;
 
- 
-  
-
-    this.crShape=function (shape, obm , x, y, z, rx, ry, rz, s) {
+     this.crShape=function (shape, obm , x, y, z, rx, ry, rz, s) {
     //obm an object containing obm.settings.extrudeSettings and obm.settings.extrudeSettings
     var geometry = new THREE.ExtrudeGeometry(shape, obm.settings.extrudeSettings);
 
@@ -1068,7 +1078,28 @@ function line(points, width, color) {
 function LJL() {
    this.tmetal="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT413jDECPcWpExKfDvY4QqegtPfXIYelonQEJspu8ZNyvi1_--74DdoMmGUOPw6DOcRes&usqp=CAU"
    //  this.tmetal="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuTTB-NXkpu7X_SV42LBbdS5npnlL94PiVEJjEdUsYChvvfc34jIoMTmKHnJFRw7kcEGk&usqp=CAU"
-this.downloadFile= function(filename, text){
+
+this.getMethods = function(ob, varname){
+    var kys = [];
+var json = JSON.stringify(ob, function(key, value) {
+ if (typeof value === 'function') {
+     var v = value.toString();
+     var funk = v.split("(")[0] + " "; //+key
+     var pa = varname+"." + key + v.substring(v.indexOf("("), v.indexOf(")") + 1);
+     kys.push(pa + "\n\n")
+     return value;
+ }
+ return value;
+}, 2);
+
+return kys;
+}
+
+
+
+
+
+   this.downloadFile= function(filename, text){
 
  if(filename.indexOf(".")==-1) filename+=".txt";
   var e=filename.split(".")==-1;
