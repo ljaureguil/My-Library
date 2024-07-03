@@ -1078,13 +1078,27 @@ function line(points, width, color) {
 function LJL() {
    this.tmetal="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT413jDECPcWpExKfDvY4QqegtPfXIYelonQEJspu8ZNyvi1_--74DdoMmGUOPw6DOcRes&usqp=CAU"
    //  this.tmetal="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuTTB-NXkpu7X_SV42LBbdS5npnlL94PiVEJjEdUsYChvvfc34jIoMTmKHnJFRw7kcEGk&usqp=CAU"
-
+   Array.prototype.translateAr2 = function(ax,ay){
+    for(var i=0;i<this.length;i++){
+    this[i][0]+=ax;
+    this[i][1]+=ay;
+    
+    }
+    }
+    Array.prototype.setPosAr2 = function(x,y){
+    var dx=x-this[0][0];
+    var dy=y-this[0][1];
+    for(var i=0;i<this.length;i++){
+    this[i][0]+=dx;
+    this[i][1]+=dy;
+    }
+    }
 this.getMethods = function(ob, varname){
     var kys = [];
 var json = JSON.stringify(ob, function(key, value) {
  if (typeof value === 'function') {
      var v = value.toString();
-     var funk = v.split("(")[0] + " "; //+key
+ //    var funk = v.split("(")[0] + " "; //+key
      var pa = varname+"." + key + v.substring(v.indexOf("("), v.indexOf(")") + 1);
      kys.push(pa + "\n\n")
      return value;
@@ -1094,9 +1108,6 @@ var json = JSON.stringify(ob, function(key, value) {
 
 return kys;
 }
-
-
-
 
 
    this.downloadFile= function(filename, text){
@@ -1115,7 +1126,27 @@ return kys;
   document.body.removeChild(a); 
  
 }
- 
+this.opening=function (s) {
+    return [
+      [s.x, s.y],
+      [s.x, s.h + s.y],
+      [s.x + s.w, s.h + s.y],
+      [s.x + s.w, s.y],
+      [s.x, s.y]
+  ];
+}
+
+this.toV2 =function (path) {
+             //array with arrays with x an y.
+  var ar = []
+  for (var i = 0; i < path.length; i++) {
+      ar.push(new THREE.Vector2(path[i][0], path[i][1]))
+  }
+  return ar;
+
+}
+
+
  
     this.arlebs = [];
   this.arrayToV2 = function(ar){
