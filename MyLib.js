@@ -627,9 +627,13 @@ Array.prototype.translateAr2 = function(ax,ay){
     }
     }
 this.scircle=`
-function circle(d,s,arc,pos){
+function circle(d,arc,aini,s,pos){;
+  
     this.d=d;
     this.s=s;
+    this.arc=arc;
+    this.aini=aini;
+    
     this.pos=pos;
     this.setPos=function(x,y){
     for(var i=0;i<this.ar.length;i++){
@@ -662,12 +666,13 @@ function circle(d,s,arc,pos){
     if(arc!=undefined){
         if(arc<=se)se=arc;
          } 
+     //    if(arcini===undefined) arcini=0;
     var e=se/s
     var end=se;
     
     for(var i=0;i<se;i+=e){
-    var x=Math.cos(i)*r;
-    var y=Math.sin(i)*r;
+    var x=Math.cos(i+this.aini)*r;
+    var y=Math.sin(i+this.aini)*r;
     this.ar.push([x,y]);
     this.ar0.push([x,y]);
     }
@@ -676,12 +681,12 @@ function circle(d,s,arc,pos){
     }
             
 `;
-this.circle = function(d,s,pos){
+this.circle = function(d,arc,aini,s,pos){
     if(d===undefined)d=1;
     if(s===undefined)s=30;
     if(pos===undefined)pos={x:0,y:0};    
     eval(this.scircle);
-    return new circle(d,s,pos)
+    return new circle(d,arc,aini,s,pos)
 }
 this.circle_ev=function(){eval(this.scircle);}
 
