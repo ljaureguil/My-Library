@@ -701,7 +701,6 @@ this.circle_ev=function(){eval(this.scircle);}
 //////////////////////////////////////////
 this.shapePlate = function(tk,perim,holes){
 
-    var ww,tk=1;
     var v2=this.toV2(perim);
     var ws = new THREE.Shape(v2);
 
