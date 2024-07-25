@@ -681,6 +681,14 @@ function circle(d,arc,aini,s,pos){;
     }
             
 `;
+this.arCircle = function(d,arc,aini,s,pos){
+    if(d===undefined)d=1;
+    if(s===undefined)s=30;
+    if(pos===undefined)pos={x:0,y:0};    
+    eval(this.scircle);
+    var nc=new circle(d,arc,aini,s,pos)
+    return nc.ar;
+}
 this.circle = function(d,arc,aini,s,pos){
     if(d===undefined)d=1;
     if(s===undefined)s=30;
@@ -693,12 +701,11 @@ this.circle_ev=function(){eval(this.scircle);}
 //////////////////////////////////////////
 this.shapePlate = function(tk,perim,holes){
 
-    var ww,tk=1,holes=[]; 
+    var ww,tk=1;
     var v2=this.toV2(perim);
     var ws = new THREE.Shape(v2);
 
     if(holes!=undefined){
-        
     for(var i=0;i<holes.length;i++){
     var v2=this.toV2(holes[i]);
     var hole=new THREE.Path(v2);
@@ -715,7 +722,7 @@ var extrudeSettings = {
     bevelThickness: 1
 } 
 var geometry = new THREE.ExtrudeGeometry(ws, extrudeSettings);
-var mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({  color:0xeeeeee,transparent:true,opacity:.752, side: THREE.DoubleSide,}));return mesh;
+var mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({  color:0xeeeeee,transparent:true,opacity:1, side: THREE.DoubleSide,}));return mesh;
 
 }
 
