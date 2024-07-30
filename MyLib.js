@@ -1182,17 +1182,85 @@ this.opening=function (s) {
 }
 
 this.toV2 =function (path) {
-             //array with arrays with x an y.
   var ar = []
   for (var i = 0; i < path.length; i++) {
       ar.push(new THREE.Vector2(path[i][0], path[i][1]))
   }
   return ar;
-
+}
+this.toV3 =function (path) {
+ var ar = []
+for (var i = 0; i < path.length; i++) {
+ar.push(new THREE.Vector3(path[i][0], path[i][1], path[i][2]))
+}
+return ar;
 }
 
+////////////////////////////
+this.Path2=function(stxt){
 
+    var ps=stxt.split(" ");
+  var ar=[];
+  for(var i=0;i<ps.length;i++){
+  var c=ps[i].split(",");
+  var x=eval(c[0]);
+  var y=eval(c[1]);
+  ar.push([x,y]);
+   }
+  return ar;
+  }
+  this.serialPath2=function (xi,yi,stxt){
+  
+    var ps=stxt.split(" ");
+  var ar=[],xt=xi,yt=yi;
+  ar.push([xi,yi])
+  for(var i=0;i<ps.length;i++){
+  var c=ps[i].split(",");
+  var x=eval(c[0]);
+  var y=eval(c[1]);
+  
+  xt+=x;
+  yt+=y;
+  ar.push([xt,yt]);
+ }
  
+  return ar;
+  }
+  
+  
+ this.Path3=function(stxt){
+  
+    var ps=stxt.split(" ");
+  var ar=[];
+  for(var i=0;i<ps.length;i++){
+  var c=ps[i].split(",");
+  var x=eval(c[0]);
+  var y=eval(c[1]);
+  var z=eval(c[2]);
+  ar.push([x,y,z]);
+   }
+  return ar;
+  }
+ this.serialPath3=function(xi,yi,zi,stxt){
+  
+    var ps=stxt.split(" ");
+  var ar=[],xt=xi,yt=yi, zt=zi;
+  ar.push([xi,yi,zi])
+  for(var i=0;i<ps.length;i++){
+  var c=ps[i].split(",");
+  var x=eval(c[0]);
+  var y=eval(c[1]);
+  var z=eval(c[2]);
+  
+  xt+=x;
+  yt+=y;
+  zt+=z;
+  ar.push([xt,yt,zt]);
+  
+   }
+  return ar;
+  }
+ //////////////////////////////
     this.arlebs = [];
   this.arrayToV2 = function(ar){
         var arv=[];
