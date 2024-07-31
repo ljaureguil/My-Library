@@ -656,9 +656,7 @@ function circle(d,arc,aini,s,pos){;
     n.ar0=JSON.parse(JSON.stringify(this.ar0));;
     return n;
     
-    }
-    
-    
+    }  
     var r=d/2;
     this.ar=[];
     this.ar0=[];
@@ -686,7 +684,11 @@ this.arCircle = function(d,arc,aini,s,pos){
     if(s===undefined)s=30;
     if(pos===undefined)pos={x:0,y:0};    
     eval(this.scircle);
-    var nc=new circle(d,arc,aini,s,pos)
+  
+    var nc=new circle(d,arc,aini,s,pos);
+    nc.ar.v2=this.toV2(nc.ar);
+     nc.ar.path=new THREE.Path(nc.ar.v2);
+   nc.ar.shape=new THREE.Shape(nc.ar.v2)  
     return nc.ar;
 }
 this.circle = function(d,arc,aini,s,pos){
@@ -697,7 +699,13 @@ this.circle = function(d,arc,aini,s,pos){
     return new circle(d,arc,aini,s,pos)
 }
 this.circle_ev=function(){eval(this.scircle);}
-
+this.toV2 =function (path) {
+    var ar = []
+    for (var i = 0; i < path.length; i++) {
+        ar.push(new THREE.Vector2(path[i][0], path[i][1]))
+    }
+    return ar;
+  }
 //////////////////////////////////////////
 this.shapePlate = function(tk,perim,holes){
 
@@ -1171,14 +1179,85 @@ return kys;
   document.body.removeChild(a); 
  
 }
+/////////////////
+this.scircle=`
+function circle(d,arc,aini,s,pos){;
+  
+    this.d=d;
+    this.s=s;
+    this.arc=arc;
+    this.aini=aini;
+    
+    this.pos=pos;
+    this.setPos=function(x,y){
+    for(var i=0;i<this.ar.length;i++){
+    this.ar[i][0]=this.ar0[i][0]+x;
+    this.ar[i][1]=this.ar0[i][1]+y;
+    }
+    }
+    
+    this.translate = function(x,y){
+    for(var i=0;i<this.ar.length;i++){
+    this.ar[i][0]+=x;
+    this.ar[i][1]+=y;
+    }
+    
+    }
+    
+    this.clone=function(){
+    var n=new circle(this.d,this.s,this.pos);
+    n.ar=JSON.parse(JSON.stringify(this.ar));
+    n.ar0=JSON.parse(JSON.stringify(this.ar0));;
+    return n;
+    
+    }  
+    var r=d/2;
+    this.ar=[];
+    this.ar0=[];
+    var se=Math.PI*2;
+    if(arc!=undefined){
+        if(arc<=se)se=arc;
+         } 
+     //    if(arcini===undefined) arcini=0;
+    var e=se/s
+    var end=se;
+    
+    for(var i=0;i<se;i+=e){
+    var x=Math.cos(i+this.aini)*r;
+    var y=Math.sin(i+this.aini)*r;
+    this.ar.push([x,y]);
+    this.ar0.push([x,y]);
+    }
+    if(pos!=undefined) this.setPos(pos.x,pos.y)
+    
+    }
+            
+`;
+this.circlePath = function(d,arc,aini,s,pos){
+    if(d===undefined)d=1;
+    if(s===undefined)s=30;
+    if(pos===undefined)pos={x:0,y:0};    
+    eval(this.scircle);
+    var nc=new circle(d,arc,aini,s,pos);
+    nc.ar.v2=this.toV2(nc.ar);
+    nc.ar.path=new THREE.Path(nc.ar.v2);
+    nc.ar.shape=new THREE.Shape(nc.ar.v2)
+    alert(JSON.stringify(ar))
+    return nc.ar;
+}
+/////////////////
 this.opening=function (s) {
-    return [
+    var ar=[
       [s.x, s.y],
       [s.x, s.h + s.y],
       [s.x + s.w, s.h + s.y],
       [s.x + s.w, s.y],
       [s.x, s.y]
   ];
+  ar.v2=this.toV2(ar);
+  ar.path=new THREE.Path(ar.v2);
+ ar.shape=new THREE.Shape(ar.v2)
+    return ar
 }
 
 this.toV2 =function (path) {
@@ -1207,6 +1286,10 @@ this.Path2=function(stxt){
   var y=eval(c[1]);
   ar.push([x,y]);
    }
+   ar.v2=this.toV2(ar)
+   ar.path=new THREE.Path(ar.v2);
+   ar.shape=new THREE.Shape(ar.v2)
+  
   return ar;
   }
   this.serialPath2=function (xi,yi,stxt){
@@ -1223,7 +1306,9 @@ this.Path2=function(stxt){
   yt+=y;
   ar.push([xt,yt]);
  }
- 
+  ar.v2=this.toV2(ar)
+  ar.path=new THREE.Path(ar.v2);
+  ar.shape=new THREE.Shape(ar.v2)
   return ar;
   }
   
@@ -1239,6 +1324,7 @@ this.Path2=function(stxt){
   var z=eval(c[2]);
   ar.push([x,y,z]);
    }
+   ar.v3=this.toV3(ar)
   return ar;
   }
  this.serialPath3=function(xi,yi,zi,stxt){
@@ -1258,8 +1344,34 @@ this.Path2=function(stxt){
   ar.push([xt,yt,zt]);
   
    }
+   ar.v3=this.toV3(ar)
   return ar;
   }
+
+  this.extrudeShape = function(thikness, perim_shape){
+ var v2, ws;
+ if(perim_shape.type==="Shape"){
+     ws=perim_shape;
+ }
+ else{
+     v2=this.toV2(perim_shape);
+     ws = new THREE.Shape(v2);
+    }
+     var extrudeSettings = {
+        amount: thikness,
+        bevelEnabled: false,
+        bevelSegments: 2,
+        steps: 2,
+        bevelSize: .25,
+        bevelThickness: 1
+    } 
+    var geometry = new THREE.ExtrudeGeometry(ws, extrudeSettings);
+    var mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({  color:0xeeeeee,transparent:true,opacity:1, side: THREE.DoubleSide,}));
+    return mesh;
+    
+
+}
+  
  //////////////////////////////
     this.arlebs = [];
   this.arrayToV2 = function(ar){
