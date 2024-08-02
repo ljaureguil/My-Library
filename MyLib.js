@@ -1151,13 +1151,20 @@ this.getMethods = function(ob, varname){
 var json = JSON.stringify(ob, function(key, value) {
  if (typeof value === 'function') {
      var v = value.toString();
-  //   alert(key+"  " +v)
- //    var funk = v.split("(")[0] + " "; //+key;
- var op=v.indexOf("){");
- var op2=v.indexOf(") {");
  
-     var pa = varname+"." + key + v.substring(v.indexOf("("), v.indexOf(")") + 1);
-     
+ // var pa = varname+"." + key + v.substring(v.indexOf("("), v.indexOf(")")+1);// + 1"\n"
+  var s = v.substring(v.indexOf("("));
+ //alert(s)
+  var c = 0, ii=1;
+  for (var i = 0; i < s.length; i++) {
+      if (s[i] === "(") c++;
+      if (s[i] === ")") c--;
+     // alert(c)
+      if (c == 0 && s[i]===")") {ii=i;i=s.length;}//alert(ii+"\n\n"+s+"\n\n\n"+ s.substring(0, ii+1))
+ }  
+ //alert(ii)
+ var pa = varname+"." + key + s.substring(0, ii+1);// + 1"\n"
+ 
      kys.push(pa + "\n\n")
      return value;
  }
@@ -1293,18 +1300,18 @@ ar.push(new THREE.Vector3(path[i][0], path[i][1], path[i][2]))
 return ar;
 }
 
-this.setUpLebels = function(perim,params={tabW:2,tagH:1.5,lineColor:0xff0000,textColor:"blue",frame:true,frameTk:1,font:"250px Areal",backgroundColor:"rgba(0,0,0,0)",tag:true}) {
+this.setUpLebels = function(perim,params={tabW:2,tagH:1.5,lineColor:0xff0000,textColor:"blue",frame:true,frameTk:1,font:"250px Areal",backgroundColor:"rgba(0,0,0,0)",tag:true,vertices:false}) {
     gr = new THREE.Group();
     var ar = perim.v3, i=0;
     for (i = 0; i < ar.length - 1; i++) {
         var p1 = ar[i];
         var p2 = ar[i + 1];
-        var m2 = this.marcador2('', params.tabW, params.tagH, p1, p2,{lineColor:params.lineColor,color:params.textColor,font:params.font,background:params.backgroundColor,tag:params.tag}); //{color:0xff0000,frame:true,tag:true})
+        var m2 = this.marcador2('', params.tabW, params.tagH, p1, p2,{lineColor:params.lineColor,color:params.textColor,font:params.font,background:params.backgroundColor,tag:params.tag,vertices:params.vertices}); 
         gr.add(m2);
     }
     var p1 = ar[i];
     var p2 = ar[0];
-    var m2 = this.marcador2('', params.tabW, params.tagH, p1, p2,{lineColor:params.lineColor,color:params.textColor,font:params.font,background:params.backgroundColor,tag:params.tag});//, params.textColor, true, true  //{color:0xff0000,frame:true,tag:true})
+    var m2 = this.marcador2('', params.tabW, params.tagH, p1, p2,{lineColor:params.lineColor,color:params.textColor,font:params.font,background:params.backgroundColor,tag:params.tag,vertices:params.vertices});//, params.textColor, true, true  //{color:0xff0000,frame:true,tag:true})
     gr.add(m2);
 
     return gr;
@@ -1318,13 +1325,15 @@ this.marcador2 = function(msg, w, h, p1, p2, parameters = {
     border: "red",
     borderThickness: 1,
     tag: false,
-    lineColor:0xff0000
+    lineColor:0xff0000,
+    vertices:false
 }) {
     msg = Math.sqrt((p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y) + (p2.z - p1.z) * (p2.z - p1.z)).toFixed(3);
     msg += "";
-    var t;
+    var t,v,sv=JSON.stringify(p1).replace(/,/g,"\n").replace(/"/g," ").replace(/{/g,"\n").replace(/}/g,"\n");
 
-    if (parameters.tag) t = this.tag2(params = {
+    if (parameters.tag){
+         t = this.tag2(params = {
         msg: msg,
         font: parameters.font,
         color: parameters.color,
@@ -1332,9 +1341,29 @@ this.marcador2 = function(msg, w, h, p1, p2, parameters = {
         border: parameters.border,
         borderThickness: parameters.borderThickness
     });
-    else t = this.textLebel(msg, w, h, true, parameters.color, parameters.frame, parameters.font, parameters.border);
+   if(parameters.vertices) v = this.tag2(params = {
+        msg: sv,
+        font: parameters.font,
+        color: "black",
+        background: "white",
+        border: parameters.border,
+        borderThickness: parameters.borderThickness
+    });
+
+}
+    else{
+         t = this.textLebel(msg, w, h, true, "black", parameters.frame, parameters.font, parameters.border);
+      if(parameters.vertices)  v= this.textLebel(sv, w, h, true, "black", parameters.frame, parameters.font, parameters.border);
+
+    }
     var l = this.lineSegments([p1, p2], 1, parameters.lineColor);
     t.position.set((p2.x + p1.x) / 2, (p2.y + p1.y) / 2, (p2.z + p1.z) / 2);
+ 
+ if(parameters.vertices){ 
+       v.position.set(p1.x,p1.y,p1.z); 
+       l.add(v)
+    
+    }
     l.add(t)
 
     return l;
