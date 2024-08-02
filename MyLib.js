@@ -1151,8 +1151,13 @@ this.getMethods = function(ob, varname){
 var json = JSON.stringify(ob, function(key, value) {
  if (typeof value === 'function') {
      var v = value.toString();
- //    var funk = v.split("(")[0] + " "; //+key
+  //   alert(key+"  " +v)
+ //    var funk = v.split("(")[0] + " "; //+key;
+ var op=v.indexOf("){");
+ var op2=v.indexOf(") {");
+ 
      var pa = varname+"." + key + v.substring(v.indexOf("("), v.indexOf(")") + 1);
+     
      kys.push(pa + "\n\n")
      return value;
  }
@@ -1233,16 +1238,28 @@ function circle(d,arc,aini,s,pos){;
     }
             
 `;
+this.v2tov3=function(v2,z){
+    var ar=[];
+    if (z===undefined) z=0;
+for(var i=0;i<v2.length;i++){ 
+ar.push(new THREE.Vector3(v2[i].x,v2[i].y,z))
+}
+return ar
+}
 this.circlePath = function(d,arc,aini,s,pos){
     if(d===undefined)d=1;
     if(s===undefined)s=30;
     if(pos===undefined)pos={x:0,y:0};    
     eval(this.scircle);
-    var nc=new circle(d,arc,aini,s,pos);
+    var nc=new circle(d,arc,aini,s,pos); 
+  
     nc.ar.v2=this.toV2(nc.ar);
+   
+    nc.ar.v3=this.v2tov3(nc.ar.v2,0)
+ 
     nc.ar.path=new THREE.Path(nc.ar.v2);
     nc.ar.shape=new THREE.Shape(nc.ar.v2)
-    alert(JSON.stringify(ar))
+ 
     return nc.ar;
 }
 /////////////////
@@ -1256,6 +1273,7 @@ this.opening=function (s) {
   ];
   ar.v2=this.toV2(ar);
   ar.path=new THREE.Path(ar.v2);
+  ar.v3=this.v2tov3(ar.v2,0)
  ar.shape=new THREE.Shape(ar.v2)
     return ar
 }
@@ -1275,6 +1293,38 @@ ar.push(new THREE.Vector3(path[i][0], path[i][1], path[i][2]))
 return ar;
 }
 
+
+ this.setUpLebels =function(perim){
+    gr=new THREE.Group();
+    var ar=perim.v3;
+    for(var i=0;i<ar.length-1;i++){
+    var p1=ar[i];
+    var p2=ar[i+1];
+    var m2=this.marcador2('6"',1,.5,p1,p2,"green",true,true);//{color:0xff0000,frame:true,tag:true})
+     
+    gr.add(m2);
+    }
+    return gr;
+    }
+    
+    
+     this.marcador2 = function( msg, w, h, p1, p2,parameters={color:"black",font:"250px Areal",background:"rgba(0,200,0,0.5)",border:0xff0000,borderThickness:1,tag:false}){
+    msg=Math.sqrt((p2.x-p1.x)*(p2.x-p1.x)+(p2.y-p1.y)*(p2.y-p1.y)+(p2.z-p1.z)*(p2.z-p1.z)).toFixed(3);
+    msg+="";
+    var t;
+    
+    if(parameters.tag) t=this.tag2(params={msg:msg,font:parameters.font,color:parameters.color,background:parameters.background,border:parameters.border,borderThickness:parameters.borderThickness});
+    else t=this.textLebel(msg, w, h, true, parameters.color, parameters.frame, parameters.font, parameters.border);
+    var l=this.lineSegments([p1,p2], 1, parameters.border);
+    t.position.set((p2.x+p1.x)/2,(p2.y+p1.y)/2,(p2.z+p1.z)/2);
+    l.add(t)
+    
+    return l;
+    }
+
+
+
+
 ////////////////////////////
 this.Path2=function(stxt){
 
@@ -1288,6 +1338,7 @@ this.Path2=function(stxt){
    }
    ar.v2=this.toV2(ar)
    ar.path=new THREE.Path(ar.v2);
+   ar.v3=this.v2tov3(ar.v2,0)
    ar.shape=new THREE.Shape(ar.v2)
   
   return ar;
@@ -1306,10 +1357,23 @@ this.Path2=function(stxt){
   yt+=y;
   ar.push([xt,yt]);
  }
+ 
   ar.v2=this.toV2(ar)
+  ar.v3=this.v2tov3(ar.v2,0);
   ar.path=new THREE.Path(ar.v2);
   ar.shape=new THREE.Shape(ar.v2)
-  return ar;
+  ar.translate=function(x,y,ar){
+for(var i=0;i<ar.length;i++){
+ar[i][0]+=x;
+ar[i][1]+=y;
+}
+
+ar.v2=ljl.toV2(ar)
+ar.path=new THREE.Path(ar.v2);
+ar.v3=this.v2tov3(ar.v2,0);
+ar.shape=new THREE.Shape(ar.v2)
+  }
+   return ar;
   }
   
   
@@ -1543,6 +1607,9 @@ this.Path2=function(stxt){
         linea.castShadow = true;
         return linea;
     }
+    this.tag2 = function(params={msg:'',font:'10px Areal',color:'gray',border:'black',background:'rgba(0,0,0,0)',borderThickness:1}){
+       return this.tag(params)
+       }
 
 this.tag=function(params){
     var tx=params.msg;
@@ -1571,13 +1638,14 @@ if(params.background!=undefined){
      ctx.fillRect(c.width / 2-t/2-m,c.height/2-h/2,t+m*2,h+m*3);
      ctx.fillStyle = "white";//color;
      ctx.strokeStyle = ctx.fillStyle;
-     ctx.lineWidth = 2;
+     ctx.lineWidth = 1;
      ctx.strokeRect(c.width / 2-t/2-m,c.height/2-h/2,t+m*2,h+m*3);
 }
 if(params.border!=undefined){
  ctx.fillStyle = params.border;//"white";//color;
  ctx.strokeStyle = ctx.fillStyle;
- ctx.lineWidth = 2;
+ if(params.borderThickness!=undefined) params.borderThickness=1;
+ ctx.lineWidth = params.borderThickness;
   ctx.strokeRect(c.width / 2-t/2-m,c.height/2-h/2,t+m*2,h+m*3);
 }
  for(var i=0;i<arl.length;i++){
@@ -1595,7 +1663,9 @@ const sprite = new THREE.Sprite(material);
 return sprite;
 
 }
-
+this.tagTexture2 = function(params={msg:"",font:"10px Areal",color:"gray",background:"rgba(0,0,0,0)",border:"black",repeatX:1,repeatY:1}){
+   return this.tagTexture(params);
+}
  
 this.tagTexture=function(params){
     var tx=params.msg;
