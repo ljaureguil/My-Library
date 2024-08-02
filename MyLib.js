@@ -1293,35 +1293,52 @@ ar.push(new THREE.Vector3(path[i][0], path[i][1], path[i][2]))
 return ar;
 }
 
-
- this.setUpLebels =function(perim){
-    gr=new THREE.Group();
-    var ar=perim.v3;
-    for(var i=0;i<ar.length-1;i++){
-    var p1=ar[i];
-    var p2=ar[i+1];
-    var m2=this.marcador2('6"',1,.5,p1,p2,"green",true,true);//{color:0xff0000,frame:true,tag:true})
-     
+this.setUpLebels = function(perim,params={tabW:2,tagH:1.5,lineColor:0xff0000,textColor:"blue",frame:true,frameTk:1,font:"250px Areal",backgroundColor:"rgba(0,0,0,0)",tag:true}) {
+    gr = new THREE.Group();
+    var ar = perim.v3, i=0;
+    for (i = 0; i < ar.length - 1; i++) {
+        var p1 = ar[i];
+        var p2 = ar[i + 1];
+        var m2 = this.marcador2('', params.tabW, params.tagH, p1, p2,{lineColor:params.lineColor,color:params.textColor,font:params.font,background:params.backgroundColor,tag:params.tag}); //{color:0xff0000,frame:true,tag:true})
+        gr.add(m2);
+    }
+    var p1 = ar[i];
+    var p2 = ar[0];
+    var m2 = this.marcador2('', params.tabW, params.tagH, p1, p2,{lineColor:params.lineColor,color:params.textColor,font:params.font,background:params.backgroundColor,tag:params.tag});//, params.textColor, true, true  //{color:0xff0000,frame:true,tag:true})
     gr.add(m2);
-    }
-    return gr;
-    }
-    
-    
-     this.marcador2 = function( msg, w, h, p1, p2,parameters={color:"black",font:"250px Areal",background:"rgba(0,200,0,0.5)",border:0xff0000,borderThickness:1,tag:false}){
-    msg=Math.sqrt((p2.x-p1.x)*(p2.x-p1.x)+(p2.y-p1.y)*(p2.y-p1.y)+(p2.z-p1.z)*(p2.z-p1.z)).toFixed(3);
-    msg+="";
-    var t;
-    
-    if(parameters.tag) t=this.tag2(params={msg:msg,font:parameters.font,color:parameters.color,background:parameters.background,border:parameters.border,borderThickness:parameters.borderThickness});
-    else t=this.textLebel(msg, w, h, true, parameters.color, parameters.frame, parameters.font, parameters.border);
-    var l=this.lineSegments([p1,p2], 1, parameters.border);
-    t.position.set((p2.x+p1.x)/2,(p2.y+p1.y)/2,(p2.z+p1.z)/2);
-    l.add(t)
-    
-    return l;
-    }
 
+    return gr;
+}
+
+
+this.marcador2 = function(msg, w, h, p1, p2, parameters = {
+    color: "black",
+    font: "250px Areal",
+    background: "rgba(0,200,0,0.5)",
+    border: "red",
+    borderThickness: 1,
+    tag: false,
+    lineColor:0xff0000
+}) {
+    msg = Math.sqrt((p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y) + (p2.z - p1.z) * (p2.z - p1.z)).toFixed(3);
+    msg += "";
+    var t;
+
+    if (parameters.tag) t = this.tag2(params = {
+        msg: msg,
+        font: parameters.font,
+        color: parameters.color,
+        background: parameters.background,
+        border: parameters.border,
+        borderThickness: parameters.borderThickness
+    });
+    else t = this.textLebel(msg, w, h, true, parameters.color, parameters.frame, parameters.font, parameters.border);
+    var l = this.lineSegments([p1, p2], 1, parameters.lineColor);
+    t.position.set((p2.x + p1.x) / 2, (p2.y + p1.y) / 2, (p2.z + p1.z) / 2);
+    l.add(t)
+
+    return l;
+}
 
 
 
