@@ -711,6 +711,8 @@ this.shapePlate = function(tk,perim,holes){
 
     var v2=this.toV2(perim);
     var ws = new THREE.Shape(v2);
+    perim.V2=ws;
+    perim.v3=this.v2tov3(perim.v2,tk);
 
     if(holes!=undefined){
     for(var i=0;i<holes.length;i++){
@@ -1300,20 +1302,27 @@ ar.push(new THREE.Vector3(path[i][0], path[i][1], path[i][2]))
 return ar;
 }
 
-this.setUpLebels = function(perim,params={tabW:2,tagH:1.5,lineColor:0xff0000,textColor:"blue",frame:true,frameTk:1,font:"250px Areal",backgroundColor:"rgba(0,0,0,0)",tag:true,vertices:false}) {
-    gr = new THREE.Group();
+this.setUpLebels = function(perim,params={tabW:2,tagH:1.5,lineColor:0xff0000,textColor:"blue",frame:true,frameTk:1,font:"250px Areal",backgroundColor:"rgba(0,0,0,0)",tag:true,vertices:false,offset:{x:0,y:0,z:0}}) {
+ gr = new THREE.Group(), offset=params.offset;
+    if(offset===undefined)offset={x:0,y:0,z:0};
+  
     var ar = perim.v3, i=0;
     for (i = 0; i < ar.length - 1; i++) {
         var p1 = ar[i];
         var p2 = ar[i + 1];
-        var m2 = this.marcador2('', params.tabW, params.tagH, p1, p2,{lineColor:params.lineColor,color:params.textColor,font:params.font,background:params.backgroundColor,tag:params.tag,vertices:params.vertices}); 
+        var m2 = this.marcador2('', params.tabW, params.tagH, p1, p2,{lineColor:params.lineColor,color:params.textColor,font:params.font,background:params.backgroundColor,tag:params.tag,vertices:params.vertices,offset:params.offset}); 
+   
         gr.add(m2);
     }
     var p1 = ar[i];
     var p2 = ar[0];
-    var m2 = this.marcador2('', params.tabW, params.tagH, p1, p2,{lineColor:params.lineColor,color:params.textColor,font:params.font,background:params.backgroundColor,tag:params.tag,vertices:params.vertices});//, params.textColor, true, true  //{color:0xff0000,frame:true,tag:true})
-    gr.add(m2);
-
+    var op1=new THREE.Vector3(offset.x+p1.x,offset.y+p1.y,offset.z+p1.z);
+    var op2=new THREE.Vector3(offset.x+p2.x,offset.y+p2.y,offset.z+p2.z); 
+    var m2 = this.marcador2('', params.tabW, params.tagH, p1, p2,{lineColor:params.lineColor,color:params.textColor,font:params.font,background:params.backgroundColor,tag:params.tag,vertices:params.vertices,offset:params.offset});//, params.textColor, true, true  //{color:0xff0000,frame:true,tag:true})
+  
+  gr.add(m2);
+  gr.position.set(offset.x,offset.y,offset.z)
+  
     return gr;
 }
 
@@ -1326,7 +1335,9 @@ this.marcador2 = function(msg, w, h, p1, p2, parameters = {
     borderThickness: 1,
     tag: false,
     lineColor:0xff0000,
-    vertices:false
+    vertices:false,
+    offset:{x:0,y:0,z:0},
+    dash:{use:true,segments:3,gap:1}
 }) {
     msg = Math.sqrt((p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y) + (p2.z - p1.z) * (p2.z - p1.z)).toFixed(3);
     msg += "";
@@ -1345,18 +1356,27 @@ this.marcador2 = function(msg, w, h, p1, p2, parameters = {
         msg: sv,
         font: parameters.font,
         color: "black",
-        background: "white",
+        background: "rgba(255,255,255,.3)",
         border: parameters.border,
         borderThickness: parameters.borderThickness
     });
-
 }
-    else{
+    else{   
          t = this.textLebel(msg, w, h, true, "black", parameters.frame, parameters.font, parameters.border);
+
+         
       if(parameters.vertices)  v= this.textLebel(sv, w, h, true, "black", parameters.frame, parameters.font, parameters.border);
 
     }
-    var l = this.lineSegments([p1, p2], 1, parameters.lineColor);
+
+      var offset=parameters.offset;
+    if(offset===undefined) offset={x:0,y:0,z:0}
+        var op1=new THREE.Vector3(p1.x-offset.x*.8,p1.y-offset.y*.8,p1.z-offset.z*.8);
+        var op2=new THREE.Vector3(p2.x-offset.x*.8,p2.y-offset.y*.8,p2.z-offset.z*.8);  
+    var l = this.lineSegments([p1, p2,p1,op1,p2,op2], 1, parameters.lineColor,parameters.dash);
+    l.material.opacity=.5;
+    l.material.needsUpdate=true;
+ 
     t.position.set((p2.x + p1.x) / 2, (p2.y + p1.y) / 2, (p2.z + p1.z) / 2);
  
  if(parameters.vertices){ 
@@ -1364,8 +1384,8 @@ this.marcador2 = function(msg, w, h, p1, p2, parameters = {
        l.add(v)
     
     }
-    l.add(t)
-
+    l.add(t);
+ 
     return l;
 }
 
@@ -1389,11 +1409,11 @@ this.Path2=function(stxt){
   
   return ar;
   }
-  this.serialPath2=function (xi,yi,stxt){
+  this.serialPath2=function (par={stxt:"0,0 1,1 2,0",xi:0,yi:0}){//xi,yi,stxt,
   
-    var ps=stxt.split(" ");
-  var ar=[],xt=xi,yt=yi;
-  ar.push([xi,yi])
+    var ps=par.stxt.split(" ");
+  var ar=[],xt=par.xi,yt=par.yi;
+  ar.push([par.xi,par.yi])
   for(var i=0;i<ps.length;i++){
   var c=ps[i].split(",");
   var x=eval(c[0]);
@@ -1627,13 +1647,25 @@ ar.shape=new THREE.Shape(ar.v2)
         return linea;
 
     }
-    this.lineSegments = function(points, width, color) {
-        var lin = new THREE.Geometry();
+    this.lineSegments = function(points, width, color,dash={use:true,segments:3,gap:1}) {
+        var lin = new THREE.Geometry(), mat, linea;
         lin.vertices = points;
-        var mat = new THREE.LineBasicMaterial({
+        if(dash===undefined) mat = new THREE.LineBasicMaterial({
             color: color,
-            linewidth: width
+            linewidth: width,
+            transparent:true
         });
+        else{
+            mat = new THREE.LineDashedMaterial( {
+                color: color,
+                linewidth: 2,
+                scale: 1,
+                dashSize: dash.segments,
+                gapSize: dash.gap,
+            } ); 
+           
+        }
+      //  alert(mat.dashed+JSON.stringify(dash))
         var linea = new THREE.LineSegments(lin, mat);
         linea.castShadow = true;
         return linea;
@@ -1702,8 +1734,9 @@ if(params.border!=undefined){
      ctx.fillText(arl[i], x,  c.height/2-h/2+(hh+hh*i)); 
   }
 
- texture = new THREE.ImageUtils.loadTexture(c.toDataURL())
- 
+ texture = new THREE.ImageUtils.loadTexture(c.toDataURL());
+ //params.repeatY=2
+  texture = this.tagTexture2(params);
  const material = new THREE.SpriteMaterial({map: texture,color: 0xffffff});
 const sprite = new THREE.Sprite(material);
 return sprite;
