@@ -712,7 +712,7 @@ this.shapePlate = function(tk,perim,holes){
     var v2=this.toV2(perim);
     var ws = new THREE.Shape(v2);
     perim.V2=ws;
-    perim.v3=this.v2tov3(perim.v2,tk);
+    //perim.v3=this.v2tov3(perim.v2,tk);
 
     if(holes!=undefined){
     for(var i=0;i<holes.length;i++){
@@ -1304,8 +1304,8 @@ return ar;
 
 this.setUpLebels = function(perim,params={tabW:2,tagH:1.5,lineColor:0xff0000,textColor:"blue",frame:true,frameTk:1,font:"250px Areal",backgroundColor:"rgba(0,0,0,0)",tag:true,vertices:false,offset:{x:0,y:0,z:0}}) {
  gr = new THREE.Group(), offset=params.offset;
-    if(offset===undefined)offset={x:0,y:0,z:0};
-  
+    if(offset===undefined)offset={x:0,y:0,z:0,gapx:0,gapy:0,gapz:0};
+ 
     var ar = perim.v3, i=0;
     for (i = 0; i < ar.length - 1; i++) {
         var p1 = ar[i];
@@ -1316,8 +1316,6 @@ this.setUpLebels = function(perim,params={tabW:2,tagH:1.5,lineColor:0xff0000,tex
     }
     var p1 = ar[i];
     var p2 = ar[0];
-    var op1=new THREE.Vector3(offset.x+p1.x,offset.y+p1.y,offset.z+p1.z);
-    var op2=new THREE.Vector3(offset.x+p2.x,offset.y+p2.y,offset.z+p2.z); 
     var m2 = this.marcador2('', params.tabW, params.tagH, p1, p2,{lineColor:params.lineColor,color:params.textColor,font:params.font,background:params.backgroundColor,tag:params.tag,vertices:params.vertices,offset:params.offset});//, params.textColor, true, true  //{color:0xff0000,frame:true,tag:true})
   
   gr.add(m2);
@@ -1371,8 +1369,8 @@ this.marcador2 = function(msg, w, h, p1, p2, parameters = {
 
       var offset=parameters.offset;
     if(offset===undefined) offset={x:0,y:0,z:0}
-        var op1=new THREE.Vector3(p1.x-offset.x*.8,p1.y-offset.y*.8,p1.z-offset.z*.8);
-        var op2=new THREE.Vector3(p2.x-offset.x*.8,p2.y-offset.y*.8,p2.z-offset.z*.8);  
+        var op1=new THREE.Vector3(p1.x-offset.x,p1.y-offset.y,p1.z-offset.z);
+        var op2=new THREE.Vector3(p2.x-offset.x,p2.y-offset.y,p2.z-offset.z);  
     var l = this.lineSegments([p1, p2,p1,op1,p2,op2], 1, parameters.lineColor,parameters.dash);
     l.material.opacity=.5;
     l.material.needsUpdate=true;
