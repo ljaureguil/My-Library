@@ -688,7 +688,8 @@ this.arCircle = function(d,arc,aini,s,pos){
     var nc=new circle(d,arc,aini,s,pos);
     nc.ar.v2=this.toV2(nc.ar);
      nc.ar.path=new THREE.Path(nc.ar.v2);
-   nc.ar.shape=new THREE.Shape(nc.ar.v2)  
+   nc.ar.shape=new THREE.Shape(nc.ar.v2) 
+
     return nc.ar;
 }
 this.circle = function(d,arc,aini,s,pos){
@@ -731,7 +732,9 @@ var extrudeSettings = {
     bevelThickness: 1
 } 
 var geometry = new THREE.ExtrudeGeometry(ws, extrudeSettings);
-var mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({  color:0xeeeeee,transparent:true,opacity:1, side: THREE.DoubleSide,}));return mesh;
+var mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({  color:0xeeeeee,transparent:true,opacity:1, side: THREE.DoubleSide,}));
+mesh.perim=perim;
+return mesh;
 
 }
 
@@ -1305,9 +1308,10 @@ return ar;
 this.setUpLebels = function(perim,params={tabW:2,tagH:1.5,lineColor:0xff0000,textColor:"blue",frame:true,frameTk:1,font:"250px Areal",backgroundColor:"rgba(0,0,0,0)",tag:true,vertices:false,offset:{x:0,y:0,z:0}}) {
  gr = new THREE.Group(), offset=params.offset;
     if(offset===undefined)offset={x:0,y:0,z:0,gapx:0,gapy:0,gapz:0};
- 
+
     var ar = perim.v3, i=0;
-    for (i = 0; i < ar.length - 1; i++) {
+    if(ar===undefined) ar=this.v2tov3(this.toV2(perim));//this.toV3(perim)
+      for (i = 0; i < ar.length - 1; i++) {
         var p1 = ar[i];
         var p2 = ar[i + 1];
         var m2 = this.marcador2('', params.tabW, params.tagH, p1, p2,{lineColor:params.lineColor,color:params.textColor,font:params.font,background:params.backgroundColor,tag:params.tag,vertices:params.vertices,offset:params.offset}); 
@@ -1323,6 +1327,7 @@ this.setUpLebels = function(perim,params={tabW:2,tagH:1.5,lineColor:0xff0000,tex
   
     return gr;
 }
+
 
 
 this.marcador2 = function(msg, w, h, p1, p2, parameters = {
@@ -1484,6 +1489,7 @@ ar.shape=new THREE.Shape(ar.v2)
  else{
      v2=this.toV2(perim_shape);
      ws = new THREE.Shape(v2);
+     ws.perim=perim_shape;
     }
      var extrudeSettings = {
         amount: thikness,
@@ -1495,6 +1501,8 @@ ar.shape=new THREE.Shape(ar.v2)
     } 
     var geometry = new THREE.ExtrudeGeometry(ws, extrudeSettings);
     var mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({  color:0xeeeeee,transparent:true,opacity:1, side: THREE.DoubleSide,}));
+    mesh.perim=ws;
+
     return mesh;
     
 
@@ -2351,6 +2359,33 @@ this.Mat={
  var rb=2*Math.PI-ra-rc;
  var B=180-A-C;
  return {A:A,B:B,C:C,a:ra,b:rb,c:rc}
+ },
+interByAng(p1,p2,a1,a2){
+    var dx=p2.x-p1.x;
+    var dy=p2.y-p1.y;
+var d=Math.sqrt(dx*dx+dy*dy)
+var a=Math.atan(dy/dx);
+var da=180-(a1+a2);
+
+var x=Math.tan(a2)*d/(Math.tan(a1)+Math.tan(a2))
+var y=Math.tan(a1)*x;
+
+var p={}
+p.x=x
+p.y=y
+p.a=Math.atan(y/x);
+var d=Math.sqrt(x*x+y*y);
+p.r=d;
+var xx=d*Math.cos(a+p.a);
+var yy=d*Math.sin(a+p.a);
+p.xx=xx;
+p.yy=yy;
+
+return p
+
+},
+ interByAngLn(inf={line1:{p1,p2},line2:{p1,p2}}){
+    // var dx=
  }
  
  }
@@ -2371,7 +2406,6 @@ return  new THREE.Line(g, m);
 
     return this;
 }
-
 
 
 
