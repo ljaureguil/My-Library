@@ -1342,7 +1342,7 @@ this.marcador2 = function(msg, w, h, p1, p2, parameters = {
     offset:{x:0,y:0,z:0},
     dash:{use:true,segments:3,gap:1}
 }) {
-    msg = Math.sqrt((p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y) + (p2.z - p1.z) * (p2.z - p1.z)).toFixed(3);
+    msg += Math.sqrt((p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y) + (p2.z - p1.z) * (p2.z - p1.z)).toFixed(3);
     msg += "";
     var t,v,sv=JSON.stringify(p1).replace(/,/g,"\n").replace(/"/g," ").replace(/{/g,"\n").replace(/}/g,"\n");
 
