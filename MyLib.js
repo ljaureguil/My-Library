@@ -1328,8 +1328,51 @@ this.setUpLebels = function(perim,params={tabW:2,tagH:1.5,lineColor:0xff0000,tex
     return gr;
 }
 
+this.setUpLebelsV3 = function(perimV3,params={tabW:2,tagH:1.5,lineColor:0xff0000,textColor:"blue",frame:true,frameTk:1,font:"250px Areal",backgroundColor:"rgba(0,0,0,0)",tag:true,vertices:false,offset:{x:0,y:0,z:0}}) {
+ gr = new THREE.Group(), offset=params.offset;
+    if(offset===undefined)offset={x:0,y:0,z:0,gapx:0,gapy:0,gapz:0};
 
+    var ar = perimV3, i=0;
+    if(ar===undefined) ar=this.v2tov3(this.toV2(perim));//this.toV3(perim)
+      for (i = 0; i < ar.length - 1; i++) {
+        var p1 = ar[i];
+        var p2 = ar[i + 1];
+        var m2 = this.marcador2('', params.tabW, params.tagH, p1, p2,{lineColor:params.lineColor,color:params.textColor,font:params.font,background:params.backgroundColor,tag:params.tag,vertices:params.vertices,offset:params.offset}); 
+   
+        gr.add(m2);
+    }
+    var p1 = ar[i];
+    var p2 = ar[0];
+    var m2 = this.marcador2('', params.tabW, params.tagH, p1, p2,{lineColor:params.lineColor,color:params.textColor,font:params.font,background:params.backgroundColor,tag:params.tag,vertices:params.vertices,offset:params.offset});//, params.textColor, true, true  //{color:0xff0000,frame:true,tag:true})
+  
+  gr.add(m2);
+  gr.position.set(offset.x,offset.y,offset.z)
+  
+    return gr;
+}
+this.setUpLebelsAr3 = function(perimAr3,params={tabW:2,tagH:1.5,lineColor:0xff0000,textColor:"blue",frame:true,frameTk:1,font:"250px Areal",backgroundColor:"rgba(0,0,0,0)",tag:true,vertices:false,offset:{x:0,y:0,z:0}}) {
+ gr = new THREE.Group(), offset=params.offset;
+    if(offset===undefined)offset={x:0,y:0,z:0,gapx:0,gapy:0,gapz:0};
 
+    var ar = this.arrayToV3(perimAr3), i=0;
+    if(ar===undefined) ar=this.v2tov3(this.toV2(perim));//this.toV3(perim)
+      for (i = 0; i < ar.length - 1; i++) {
+        var p1 = ar[i];
+        var p2 = ar[i + 1];
+        var m2 = this.marcador2('', params.tabW, params.tagH, p1, p2,{lineColor:params.lineColor,color:params.textColor,font:params.font,background:params.backgroundColor,tag:params.tag,vertices:params.vertices,offset:params.offset}); 
+   
+        gr.add(m2);
+    }
+    var p1 = ar[i];
+    var p2 = ar[0];
+    var m2 = this.marcador2('', params.tabW, params.tagH, p1, p2,{lineColor:params.lineColor,color:params.textColor,font:params.font,background:params.backgroundColor,tag:params.tag,vertices:params.vertices,offset:params.offset});//, params.textColor, true, true  //{color:0xff0000,frame:true,tag:true})
+  
+  gr.add(m2);
+  gr.position.set(offset.x,offset.y,offset.z)
+  
+    return gr;
+}
+	
 this.marcador2 = function(msg, w, h, p1, p2, parameters = {
     color: "black",
     font: "250px Areal",
