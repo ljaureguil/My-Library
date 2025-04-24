@@ -679,6 +679,13 @@ function circle(d,arc,aini,s,pos){;
     }
             
 `;
+	this.circleAr(params={radius:1,arc:3.1416,aini:0,sections:30,pos:{x:0,y:0,z:0}}){
+    eval(this.scircle);
+		var c=new circle(params.radius*2,params.arc,params.aini,params.sections,params.pos);
+		return c.ar.V2
+
+
+	}
 this.arCircle = function(d,arc,aini,s,pos){
     if(d===undefined)d=1;
     if(s===undefined)s=30;
