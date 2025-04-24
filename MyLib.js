@@ -679,12 +679,11 @@ function circle(d,arc,aini,s,pos){;
     }
             
 `;
-	this.circleAr(params={radius:1,arc:3.1416,aini:0,sections:30,pos:{x:0,y:0,z:0}}){
-    eval(this.scircle);
-		var c=new circle(params.radius*2,params.arc,params.aini,params.sections,params.pos);
-		return c;
-
-
+this.circleObj= function(params={radius:1,arc:3.1416,ainic:0,sections:30,pos:{x:0,y:0,z:0}/*returns object*/}){
+		var d=params.radius*2,s=params.sections,pos=params.pos,arc=params.arc,ani=params.ainic;
+		eval(this.scircle);
+		var nc=new circle(d,arc,aini,s,pos);
+		return nc;
 	}
 this.arCircle = function(d,arc,aini,s,pos){
     if(d===undefined)d=1;
