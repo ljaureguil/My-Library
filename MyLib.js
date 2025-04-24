@@ -1256,6 +1256,45 @@ function circle(d,arc,aini,s,pos){;
     }
             
 `;
+
+////////////////////////////
+this.circleObj= function(params={radius:1,arc:3.1416,ainic:0,sections:30,pos:{x:0,y:0,z:0}/*returns object*/}){
+		var d=params.radius*2,s=params.sections,pos=params.pos,arc=params.arc,ani=params.ainic;
+		eval(this.scircle);
+		var nc=new circle(d,arc,aini,s,pos);
+		return nc;
+	}
+this.arCircle = function(d,arc,aini,s,pos){
+    if(d===undefined)d=1;
+    if(s===undefined)s=30;
+    if(pos===undefined)pos={x:0,y:0};    
+    eval(this.scircle);
+  
+    var nc=new circle(d,arc,aini,s,pos);
+    nc.ar.v2=this.toV2(nc.ar);
+     nc.ar.path=new THREE.Path(nc.ar.v2);
+   nc.ar.shape=new THREE.Shape(nc.ar.v2) 
+
+    return nc.ar;
+}
+this.circle = function(d,arc,aini,s,pos){
+    if(d===undefined)d=1;
+    if(s===undefined)s=30;
+    if(pos===undefined)pos={x:0,y:0};    
+    eval(this.scircle);
+    return new circle(d,arc,aini,s,pos)
+}
+this.circle_ev=function(){eval(this.scircle);}
+this.toV2 =function (path) {
+    var ar = []
+    for (var i = 0; i < path.length; i++) {
+        ar.push(new THREE.Vector2(path[i][0], path[i][1]))
+    }
+    return ar;
+  }
+
+
+////////////////////////////	
 this.v2tov3=function(v2,z){
     var ar=[];
     if (z===undefined) z=0;
