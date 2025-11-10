@@ -1,0 +1,101 @@
+
+async function GetJson(link,callback) {
+  try {
+    const response = await fetch(link);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+if(callback!=undefined) callback(data);
+ return data
+   
+  } catch (error) {
+    alert('Error fetching data:', error);
+  }
+}
+
+
+
+
+//////////////////////
+
+async function UpdateJson(link, newJson, callback) {
+var newData=newJson
+  try {
+    const response = await fetch(link, {//link podria ser `https://api.example.com/resources/${id}`
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        // Add any other necessary headers, e.g., Authorization
+      },
+      body: JSON.stringify(newData), // Convert the data object to a JSON string
+    });
+
+    if (!response.ok) {
+      // Handle HTTP error responses (e.g., 404, 500)
+      const errorData = await response.json(); // Attempt to parse error details
+      throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.message || 'Unknown error'}`);
+    }
+
+    const updatedResource = await response.json(); // Parse the successful response body
+//    alert('Object updated successfully:', updatedResource);
+if(callback!=undefined) callback(updatedResource);
+    return updatedResource;
+
+  } catch (error) {
+    alert('Error updating resource:', error);
+    // Handle network errors or other exceptions
+  }
+}
+
+
+async function GetText(link,callback) {
+  try {
+    const response = await fetch(link);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+if(callback!=undefined) callback(data);
+ return data
+   
+  } catch (error) {
+    alert('Error fetching data:', error);
+  }
+}
+
+
+
+
+//////////////////////
+
+async function UpdateText(link, newJson, callback) {
+var newData=newJson
+  try {
+    const response = await fetch(link, {//link podria ser `https://api.example.com/resources/${id}`
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        // Add any other necessary headers, e.g., Authorization
+      },
+      body: JSON.stringify(newData), // Convert the data object to a JSON string
+    });
+
+    if (!response.ok) {
+      // Handle HTTP error responses (e.g., 404, 500)
+      const errorData = await response.json(); // Attempt to parse error details
+      throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.message || 'Unknown error'}`);
+    }
+
+    const updatedResource = await response.json(); // Parse the successful response body
+//    alert('Object updated successfully:', updatedResource);
+if(callback!=undefined) callback(updatedResource);
+    return updatedResource;
+
+  } catch (error) {
+    alert('Error updating resource:', error);
+    // Handle network errors or other exceptions
+  }
+}
+
+
