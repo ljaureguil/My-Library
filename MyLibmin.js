@@ -69,26 +69,26 @@ if(callback!=undefined) callback(data);
 
 //////////////////////
 
-async function UpdateText(link, newJson, callback) {
-var newData=newJson
+async function UpdateText(link, newText, callback) {
+var newData=newText
   try {
-    const response = await fetch(link, {//link podria ser `https://api.example.com/resources/${id}`
+    const response = await fetch(link, {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/text',
         // Add any other necessary headers, e.g., Authorization
       },
-      body: JSON.stringify(newData), // Convert the data object to a JSON string
+      body: newData, 
     });
 
     if (!response.ok) {
       // Handle HTTP error responses (e.g., 404, 500)
-      const errorData = await response.json(); // Attempt to parse error details
+      const errorData = await response.text(); // Attempt to parse error details
       throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.message || 'Unknown error'}`);
     }
 
-    const updatedResource = await response.json(); // Parse the successful response body
-//    alert('Object updated successfully:', updatedResource);
+    const updatedResource = await response.text(); //  successful response body
+
 if(callback!=undefined) callback(updatedResource);
     return updatedResource;
 
@@ -97,5 +97,6 @@ if(callback!=undefined) callback(updatedResource);
     // Handle network errors or other exceptions
   }
 }
+
 
 
