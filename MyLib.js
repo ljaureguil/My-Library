@@ -2297,6 +2297,69 @@ return Materials;
         }  
 this.Mat={
     // pii: Math.PI,
+
+   roundUp(number, toDecimal) {
+        var ex = 10 ** toDecimal;
+        return Math.round(number * ex) / ex;
+    },
+  div2(n) {
+        var s = n / 2;
+        s = s + "";
+        if (s.indexOf(".") > -1) return false;
+        else return true;
+    },
+   reducirF(n, minf) {
+        var num = n;
+        var den = minf;
+
+        var fsec = num + "/" + den;
+        for (var i = 0; i < 6; i++) {
+            var vf = this.div2(num)
+            if (vf === true) {
+                num = num / 2;
+                den = den / 2;
+                fsec += "  " + num + "/" + den
+            }
+        }
+        return fsec;
+    },
+decToFractions(numberExp, minFrac) {
+    try {
+        n = eval(numberExp);
+    } catch (e) {
+        alert(e)
+    };
+
+    var frini = minFrac;
+    if (frini === undefined) frini = 32;
+
+    var dr = 1 / frini;
+    var lrs = (dr + "").length - 2;
+    var ex = 10 ** lrs
+    var rn = Math.round(n * ex) / ex;
+    var r = this.roundUp(n, lrs);
+
+    var u = {}
+    if (n < (1 / minFrac)) return {
+        "msg": "Numero menor que la fraccion minima"
+    }
+    u.origExpresion = numberExp;
+    u.origNumero = n;
+    u.minFrac = frini;
+    u.entero = Math.trunc(n);
+    u.decimal = this.roundUp(u.origNumero - u.entero, lrs);
+    u.residuoDeFrac = u.decimal * u.minFrac;
+    u.numeradorI = Math.trunc(u.residuoDeFrac);
+    u.denominadorI = frini;
+    var sec = this.reducirF(u.numeradorI, u.denominadorI);
+    var ar = sec.split(" ");
+    u.resultado = u.entero + " . (" + ar[ar.length - 1] + ")";
+    u.evaluacion = u.entero + " + " + ar[ar.length - 1];
+    u.secuencia = sec;
+    u.restante = u.origNumero - eval(u.evaluacion);
+
+    return u;
+},
      toRad(a) {
          return a * Math.PI / 180
      },
