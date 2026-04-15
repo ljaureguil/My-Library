@@ -109,7 +109,7 @@ var c_o=`!efdpe!>!gvodujpo)dmw-!s-!dbmmcbdl-!qjo*!|!jg!)qjo!>>>!voefgjofe*!qjo!>
  math={
 
 "name":"math",
-pi:Math.PI,
+"pi":Math.PI,
 
    roundUp(number, toDecimal) {
         var ex = 10 ** toDecimal;
