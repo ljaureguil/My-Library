@@ -8,6 +8,7 @@ async function GetJson(link,callback) {
     const response = await fetch(link);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
+      if(callback!=undefined) callback({"error":error,"msg":"Something went wrong"});
     }
     const data = await response.json();
 if(callback!=undefined) callback(data);
@@ -15,6 +16,7 @@ if(callback!=undefined) callback(data);
    
   } catch (error) {
     alert('Error fetching data:', error);
+    if(callback!=undefined) callback({"error":error,"msg":"Something went wrong"});
   }
 }
 
@@ -39,6 +41,7 @@ var newData=newJson
       // Handle HTTP error responses (e.g., 404, 500)
       const errorData = await response.json(); // Attempt to parse error details
       throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.message || 'Unknown error'}`);
+      if(callback!=undefined) callback({"error":error,"msg":"Something went wrong"});
     }
 
     const updatedResource = await response.json(); // Parse the successful response body
@@ -48,6 +51,7 @@ if(callback!=undefined) callback(updatedResource);
 
   } catch (error) {
     alert('Error updating resource:', error);
+    if(callback!=undefined) callback({"error":error,"msg":"Something went wrong"});
     // Handle network errors or other exceptions
   }
 }
@@ -58,6 +62,7 @@ async function GetText(link,callback) {
     const response = await fetch(link);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
+      if(callback!=undefined) callback({"error":error,"msg":"Something went wrong"});
     }
     const data = await response.json();
 if(callback!=undefined) callback(data);
@@ -65,6 +70,7 @@ if(callback!=undefined) callback(data);
    
   } catch (error) {
     alert('Error fetching data:', error);
+    if(callback!=undefined) callback({"error":error,"msg":"Something went wrong"});
   }
 }
 
@@ -89,6 +95,7 @@ var newData=newText
       // Handle HTTP error responses (e.g., 404, 500)
       const errorData = await response.text(); // Attempt to parse error details
       throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.message || 'Unknown error'}`);
+      if(callback!=undefined) callback({"error":error,"msg":"Something went wrong"});
     }
 
     const updatedResource = await response.text(); //  successful response body
@@ -98,6 +105,7 @@ if(callback!=undefined) callback(updatedResource);
 
   } catch (error) {
     alert('Error updating resource:', error);
+    if(callback!=undefined) callback({"error":error,"msg":"Something went wrong"});
     // Handle network errors or other exceptions
   }
 }
