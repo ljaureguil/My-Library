@@ -32,6 +32,7 @@ var newData=newJson
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
+          'Authorization': 'Bearer jbpat_cdd8f3cb5e10122dc443aa1309aafe7460b13e23d6e32ecc11d71fbe5718'
         // Add any other necessary headers, e.g., Authorization
       },
       body: JSON.stringify(newData), // Convert the data object to a JSON string
