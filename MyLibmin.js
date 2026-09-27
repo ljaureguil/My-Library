@@ -3,6 +3,33 @@
 
 function tradC(s,n){var ss="";for(var i=0;i<s.length;i++){ss+=String.fromCharCode(s.charCodeAt(i)-n)};return ss}
 
+
+    function codif(tx) {
+        const originalString = tx;
+
+        // 1. Convert string to a UTF-8 byte array
+        const encoder = new TextEncoder();
+        const bytes = encoder.encode(originalString);
+
+        // 2. Encode bytes directly to Base64
+        const encodedString = bytes.toBase64();
+        return encodedString;
+    }
+    function decodif(txc) {
+        const base64String = txc;
+
+        // 1. Decode Base64 string back into a byte array
+        const bytes = Uint8Array.fromBase64(base64String);
+
+        // 2. Convert bytes back into a UTF-8 string
+        const decoder = new TextDecoder();
+        const decodedString = decoder.decode(bytes);
+
+        return decodedString;
+
+    }
+
+
 async function GetJson(link,callback) {
   try {
     const response = await fetch(link);
