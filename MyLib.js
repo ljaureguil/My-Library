@@ -1315,7 +1315,9 @@ this.circlePath = function(d,arc,aini,s,pos){
     nc.ar.v3=this.v2tov3(nc.ar.v2,0)
  
     nc.ar.path=new THREE.Path(nc.ar.v2);
-    nc.ar.shape=new THREE.Shape(nc.ar.v2)
+    nc.ar.shape=new THREE.Shape(nc.ar.v2);
+	
+	nc.sideLength = 2*nc.r*Math.sin(Math.PI/s);
  
     return nc.ar;
 }
