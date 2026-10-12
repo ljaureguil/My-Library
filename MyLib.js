@@ -1318,6 +1318,8 @@ this.circlePath = function(d,arc,aini,s,pos){
     nc.ar.shape=new THREE.Shape(nc.ar.v2);
 
 	nc.ar.sideLength = d*Math.sin(Math.PI/s);
+	nc.ar.angR=Math.PI*2/s;
+	nc.ar.angD=360/s;
  
     return nc.ar;
 }
