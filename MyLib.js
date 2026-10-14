@@ -1,4 +1,4 @@
-//<script src="https://cdn.rawgit.com/ljaureguil/My-Library/7a86fc79/MyLib.js"></script>
+r//<script src="https://cdn.rawgit.com/ljaureguil/My-Library/7a86fc79/MyLib.js"></script>
 var Obj, state = false;
 
 function gsubtract(fromob, ob) {
