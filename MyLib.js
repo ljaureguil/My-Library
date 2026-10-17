@@ -612,7 +612,13 @@ function plane(x, y, texture, color, center) {
 function structural() {
 /////////////////////////////////////////
 	
-this.crWall = function(w,h,tk,ventanas,texture,color /*w: width, h: height, tk: thikness, ventanas: array of windows(shapes), texture: texture(TextureLoader obj), color:color;*/){
+this.crWall = function(w,h,tk,ventanas,texture,color 
+					   /*w: width, h:
+					   height, tk: thikness,
+					   ventanas: array of windows ({{x:x_left_inic,y_right_inic},w,h}),
+					   texture: texture(TextureLoader obj
+					   ), color:color;*/
+					  ){
 	//w: width, h: height, tk: thikness, ventanas: array of windows(shapes), texture: texture(TextureLoader obj), color:color;
 if(color===undefined) color="white";
 if(texture===undefined) texture="";
