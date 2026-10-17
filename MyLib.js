@@ -611,6 +611,46 @@ function plane(x, y, texture, color, center) {
 
 function structural() {
 /////////////////////////////////////////
+	
+this.crWall = function(w,h,tk,ventanas,texture,color /*w: width, h: height, tk: thikness, ventanas: array of windows(shapes), texture: texture(TextureLoader obj), color:color;*/){
+	//w: width, h: height, tk: thikness, ventanas: array of windows(shapes), texture: texture(TextureLoader obj), color:color;
+if(color===undefined) color="white";
+if(texture===undefined) texture="";
+
+var perim=[{x:0,y:0},
+{x:w,y:0},
+{x:w,y:h},
+{x:0,y:h}]
+var shape=new THREE.Shape(perim)
+
+if(ventanas!==undefined){
+for(var i=0;i<ventanas.length;i++){
+var pi=ventanas[i].pi;
+var x=ventanas[i].w;
+var y=ventanas[i].h;
+var perimv=[pi,{x:pi.x+x,y:pi.y},{x:pi.x+x,y:pi.y+y},{x:pi.x,y:pi.y+y}]
+var sh=new THREE.Shape(perimv);
+//alert(JSON.stringify(sh))
+shape.holes.push(sh)
+}
+}
+const extrudeSettings = {
+  depth: tk,
+  bevelEnabled: false,
+  bevelSegments: 1,
+  steps: 1,
+  bevelSize: .5,
+  bevelThickness: 1
+};
+
+const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+const material = new THREE.MeshPhongMaterial({ map: texture, transparent: true, side: THREE.DoubleSide, opacity:1, color: color });
+const mesh = new THREE.Mesh(geometry, material);
+return mesh;
+}
+
+
+
 Array.prototype.translateAr2 = function(ax,ay){
     for(var i=0;i<this.length;i++){
     this[i][0]+=ax;
